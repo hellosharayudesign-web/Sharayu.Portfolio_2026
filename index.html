@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>sharayu.design — UX/UI Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --rose:#f5c2ce;--lavender:#cfc0f7;--mint:#b0ecd8;--peach:#f8d8b0;--sky:#b2d8fc;
+  --cream:#faf7f2;--dark:#131018;--mid:#38264e;--text:#271c3a;--muted:#8a7a9a;
+  --border:rgba(180,160,210,0.18);
+  --black:#060606;--white:#f5f0eb;
+  --p1:#ffb3c6;--p2:#b5ead7;--p3:#c7ceea;--p4:#ffdac1;
+  --grad:linear-gradient(135deg,#ffb3c6 0%,#c7ceea 35%,#b5ead7 65%,#ffdac1 100%);
+  --pastel:linear-gradient(180deg,#fce8ef 0%,#eaedf8 38%,#ddf4ec 68%,#fef0e4 100%);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden;cursor:none;}
+
+/* CURSOR */
+#cur{position:fixed;width:12px;height:12px;border-radius:50%;pointer-events:none;z-index:99999;left:-100px;top:-100px;transform:translate(-50%,-50%);transition:width .25s,height .25s,background .25s;will-change:left,top;}
+#cur.dk{background:var(--p1);mix-blend-mode:difference;}
+#cur.lt{background:#060606;mix-blend-mode:normal;}
+#cur.dk.hov{width:40px;height:40px;background:rgba(255,179,198,.15);border:1.5px solid var(--p1);mix-blend-mode:normal;}
+#cur.lt.hov{width:40px;height:40px;background:transparent;border:1.5px solid rgba(6,6,6,.45);}
+#cur2{position:fixed;width:38px;height:38px;border-radius:50%;pointer-events:none;z-index:99998;left:-100px;top:-100px;transform:translate(-50%,-50%);will-change:left,top;}
+#cur2.dk{border:1px solid rgba(255,179,198,.2);}
+#cur2.lt{border:1px solid rgba(6,6,6,.15);}
+
+/* LOADER */
+#loader{position:fixed;inset:0;background:var(--black);z-index:10000;display:flex;align-items:center;justify-content:center;pointer-events:none;transition:opacity .4s;}
+#loader.gone{opacity:0;}
+.ld-logo{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.ld-bar{position:absolute;bottom:0;left:0;height:2px;background:linear-gradient(90deg,var(--p1),var(--p3),var(--p2));width:0;transition:width .8s;}
+
+/* TRANSITION OVERLAY */
+#ovl{position:fixed;inset:0;background:var(--cream);z-index:9999;pointer-events:none;opacity:0;transition:opacity .25s;}
+#ovl.show{opacity:1;pointer-events:all;}
+
+/* ZOOM HERO */
+#zhero{position:fixed;inset:0;z-index:500;background:var(--black);overflow:hidden;transition:opacity .55s;}
+#zhero.out{opacity:0;pointer-events:none;}
+.zh-dots{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,179,198,.07) 1px,transparent 1px);background-size:50px 50px;animation:ddrift 30s linear infinite;}
+@keyframes ddrift{to{background-position:50px 50px;}}
+.zh-glow{position:absolute;border-radius:50%;filter:blur(130px);pointer-events:none;animation:hgp 9s ease-in-out infinite alternate;}
+.zh-g1{width:540px;height:540px;background:rgba(255,179,198,.09);top:-180px;right:-180px;}
+.zh-g2{width:430px;height:430px;background:rgba(199,206,234,.07);bottom:-120px;left:-120px;animation-delay:3s;}
+@keyframes hgp{0%{transform:scale(1);opacity:.5;}100%{transform:scale(1.25) translate(18px,-18px);opacity:1;}}
+#zcopy{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 52px;transition:opacity .4s,transform .4s,filter .4s;}
+#zcopy h1{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,6.8vw,110px);font-weight:600;line-height:1.05;letter-spacing:-1px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+#zcopy h1 em{font-style:italic;font-weight:400;}
+#zcopy .zs{font-family:'Inter',sans-serif;font-size:clamp(12px,1.4vw,16px);color:rgba(245,240,235,.38);margin-top:18px;letter-spacing:.5px;}
+.zh-hint{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;pointer-events:none;}
+.zh-hint span{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,179,198,.3);}
+.zh-hline{width:1px;height:48px;background:linear-gradient(to bottom,rgba(255,179,198,.5),transparent);animation:hln 2s ease-in-out infinite;}
+@keyframes hln{0%,100%{transform:scaleY(1);opacity:1;}50%{transform:scaleY(.35) translateY(14px);opacity:.15;}}
+#zcircle{position:absolute;inset:0;z-index:1;background:var(--grad);clip-path:circle(0% at 50% 50%);transition:clip-path .05s;}
+.zh-tap{display:none;position:absolute;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(255,179,198,.12);border:1px solid rgba(255,179,198,.3);border-radius:50px;padding:12px 28px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,179,198,.6);cursor:pointer;z-index:10;}
+@media(hover:none){.zh-hint{display:none;}.zh-tap{display:block;}}
+
+/* NAV */
+#nav{position:fixed;top:0;left:0;right:0;z-index:600;display:flex;align-items:center;justify-content:space-between;padding:28px 72px;transition:background .4s,padding .3s,border-color .4s;}
+#nav.on-hero{background:transparent;border-bottom:none;padding:34px 72px;}
+#nav.light{background:rgba(250,247,242,.9);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);}
+#nav.dark{background:rgba(6,6,6,.85);backdrop-filter:blur(28px);border-bottom:1px solid rgba(255,255,255,.06);}
+.nlogo{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400;text-decoration:none;cursor:none;transition:color .3s;letter-spacing:.01em;}
+#nav.on-hero .nlogo,#nav.dark .nlogo{color:var(--white);}
+#nav.light .nlogo{color:var(--dark);}
+.nlinks{display:flex;gap:40px;list-style:none;align-items:center;}
+.nlinks li a{text-decoration:none;font-size:.82rem;font-weight:400;letter-spacing:.03em;position:relative;padding-bottom:3px;transition:color .3s;cursor:none;}
+.nlinks li a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;transition:width .3s;}
+#nav.on-hero .nlinks li a,#nav.dark .nlinks li a{color:rgba(245,240,235,.45);}
+#nav.on-hero .nlinks li a::after,#nav.dark .nlinks li a::after{background:var(--p1);}
+#nav.on-hero .nlinks li a:hover,#nav.dark .nlinks li a:hover,
+#nav.on-hero .nlinks li a.act,#nav.dark .nlinks li a.act{color:var(--white);}
+#nav.light .nlinks li a{color:var(--muted);}
+#nav.light .nlinks li a::after{background:var(--dark);}
+#nav.light .nlinks li a:hover,#nav.light .nlinks li a.act{color:var(--dark);}
+.nlinks li a:hover::after,.nlinks li a.act::after{width:100%;}
+/* Let's Talk pill */
+.ntalk{display:inline-block;text-decoration:none;padding:9px 24px;border-radius:50px;font-size:.8rem;font-weight:500;letter-spacing:.03em;cursor:none;position:relative;overflow:hidden;isolation:isolate;transition:color .3s,box-shadow .3s;}
+.ntalk span{position:relative;z-index:2;}
+.ntalk::before{content:'';position:absolute;inset:0;border-radius:50px;transform:scaleX(0);transform-origin:right;transition:transform .38s cubic-bezier(.7,0,.3,1);z-index:1;}
+.ntalk:hover::before{transform:scaleX(1);transform-origin:left;}
+#nav.on-hero .ntalk,#nav.dark .ntalk{color:var(--white);border:1.5px solid rgba(255,255,255,.55);}
+#nav.on-hero .ntalk::before,#nav.dark .ntalk::before{background:var(--white);}
+#nav.on-hero .ntalk:hover,#nav.dark .ntalk:hover{color:var(--black)!important;border-color:var(--white);box-shadow:0 4px 18px rgba(0,0,0,.2);}
+#nav.light .ntalk{color:var(--dark);border:1.5px solid rgba(19,16,24,.28);}
+#nav.light .ntalk::before{background:var(--dark);}
+#nav.light .ntalk:hover{color:var(--cream)!important;border-color:var(--dark);box-shadow:0 4px 18px rgba(19,16,24,.18);}
+@media(max-width:768px){#nav{padding:16px 24px!important;} .nlinks li:not(:last-child) a:not(.ntalk){display:none;}}
+
+/* PAGES */
+.pg{display:none;min-height:100vh;position:relative;z-index:1;}
+.pg.show{display:block;}
+.cspg{display:none;min-height:100vh;position:relative;z-index:1;}
+.cspg.show{display:block;}
+
+/* REVEAL ANIMATION */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .75s cubic-bezier(.25,.8,.25,1),transform .75s cubic-bezier(.25,.8,.25,1);}
+.rv.in{opacity:1;transform:none;}
+
+/* ─── HOME PAGE ─── */
+#pg-home{background:var(--pastel);}
+/* pastel blobs */
+.pblob{position:absolute;border-radius:50%;filter:blur(120px);opacity:.16;pointer-events:none;animation:bblob 14s ease-in-out infinite alternate;}
+.pb1{width:700px;height:700px;background:#ffb3c6;top:-200px;right:-200px;}
+.pb2{width:550px;height:550px;background:#b5ead7;bottom:20%;left:-180px;animation-delay:5s;}
+.pb3{width:400px;height:400px;background:#c7ceea;top:45%;left:50%;animation-delay:9s;}
+@keyframes bblob{0%{transform:scale(1);}100%{transform:scale(1.18) translate(28px,20px);}}
+
+/* about section */
+#h-about{padding:140px 48px 100px;position:relative;overflow:hidden;}
+.h-about-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.2fr .8fr;gap:60px;align-items:center;}
+.ha-eyebrow{font-size:13px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:rgba(6,6,6,.4);display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.ha-eyebrow::before{content:'';width:24px;height:1px;background:rgba(6,6,6,.25);display:block;}
+.ha-title{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,3.6vw,52px);font-weight:700;color:var(--black);line-height:1.12;letter-spacing:-.5px;margin-bottom:20px;}
+.ha-rule{width:48px;height:2px;background:var(--grad);border-radius:2px;margin-bottom:24px;}
+.ha-para{font-size:15px;line-height:1.85;color:rgba(6,6,6,.58);max-width:500px;margin-bottom:40px;}
+.ha-btns{display:flex;gap:14px;flex-wrap:wrap;}
+.btn-dk{background:var(--black);color:var(--white);padding:14px 30px;border-radius:100px;font-size:13px;font-weight:600;border:none;cursor:none;transition:transform .3s,box-shadow .3s;display:inline-block;}
+.btn-dk:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(6,6,6,.25);}
+.btn-ol{border:1.5px solid rgba(6,6,6,.28);color:var(--black);padding:14px 30px;border-radius:100px;font-size:13px;font-weight:600;background:transparent;cursor:none;transition:background .3s,transform .3s;display:inline-block;}
+.btn-ol:hover{background:rgba(6,6,6,.07);transform:translateY(-2px);}
+
+/* photo frame */
+.ph-wrap{display:flex;justify-content:center;}
+.ph-inner{width:62%;position:relative;}
+#ph-frame{width:100%;aspect-ratio:3/4;border-radius:22px;overflow:hidden;position:relative;cursor:none;box-shadow:0 36px 80px rgba(6,6,6,.12);animation:pfloat 7s ease-in-out infinite alternate;}
+@keyframes pfloat{0%{transform:translateY(0) rotate(-1deg);}100%{transform:translateY(-16px) rotate(.5deg);}}
+#ph-reveal{position:absolute;inset:0;z-index:3;background:rgba(6,6,6,.88);backdrop-filter:blur(6px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 32px;opacity:0;transition:opacity .5s cubic-bezier(.23,1,.32,1);}
+#ph-frame:hover #ph-reveal{opacity:1;}
+#ph-base{position:absolute;inset:0;z-index:2;background:linear-gradient(155deg,rgba(255,179,198,.22),rgba(199,206,234,.22));display:flex;align-items:center;justify-content:center;transition:opacity .5s;}
+#ph-frame:hover #ph-base{opacity:0;}
+#ph-hint{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(6,6,6,.22);white-space:nowrap;z-index:5;transition:opacity .4s;}
+#ph-frame:hover #ph-hint{opacity:0;}
+.ph-spin{font-size:52px;opacity:.2;animation:spin 22s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.rv-row{display:flex;flex-direction:column;align-items:center;padding:16px 0;width:100%;}
+.rv-num{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:600;line-height:1;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;transform:translateY(10px);opacity:0;transition:transform .5s,opacity .5s;}
+.rv-lbl{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,240,235,.35);margin-top:4px;transform:translateY(8px);opacity:0;transition:transform .5s,opacity .5s;}
+.rv-line{width:36px;height:1px;background:var(--grad);opacity:0;transform:scaleX(0);transition:transform .55s cubic-bezier(.23,1,.32,1),opacity .55s;}
+#ph-frame:hover .rv-num{transform:none;opacity:1;}
+#ph-frame:hover .rv-lbl{transform:none;opacity:1;}
+#ph-frame:hover .rv-line{transform:scaleX(1);opacity:1;}
+.rv-row:nth-child(1) .rv-num,.rv-row:nth-child(1) .rv-lbl{transition-delay:.08s;}
+.rv-row:nth-child(3) .rv-num,.rv-row:nth-child(3) .rv-lbl{transition-delay:.18s;}
+.rv-row:nth-child(5) .rv-num,.rv-row:nth-child(5) .rv-lbl{transition-delay:.28s;}
+.rv-row:nth-child(2) .rv-line{transition-delay:.13s;}
+.rv-row:nth-child(4) .rv-line{transition-delay:.23s;}
+.ftag{position:absolute;background:rgba(6,6,6,.78);backdrop-filter:blur(16px);border-radius:100px;padding:6px 13px;color:var(--white);font-size:10px;font-weight:600;white-space:nowrap;z-index:10;border:1px solid rgba(255,255,255,.1);}
+.ftag-dot{display:inline-block;width:5px;height:5px;border-radius:50%;margin-right:7px;vertical-align:middle;}
+.ft1{top:8%;right:-28%;animation:ftag 4s ease-in-out infinite alternate;}
+.ft2{top:30%;left:-26%;animation:ftag 5s 1s ease-in-out infinite alternate;}
+.ft3{top:54%;right:-26%;animation:ftag 4.5s 2s ease-in-out infinite alternate;}
+.ft4{bottom:20%;left:-24%;animation:ftag 5.5s .5s ease-in-out infinite alternate;}
+@keyframes ftag{0%{transform:translateY(0);}100%{transform:translateY(-8px);}}
+@media(max-width:1024px){.ft1,.ft2,.ft3,.ft4{display:none;}}
+
+/* work cards section */
+#h-work{padding:80px 48px 100px;position:relative;}
+.hw-hdr{max-width:1280px;margin:0 auto 56px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+.hw-eyebrow{font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:rgba(6,6,6,.32);display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.hw-eyebrow::before{content:'';width:20px;height:1px;background:rgba(6,6,6,.22);display:block;}
+.hw-title{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4.5vw,60px);font-weight:600;letter-spacing:-.5px;color:var(--black);}
+.hw-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+/* dark project card */
+.dpc{border-radius:20px;overflow:hidden;position:relative;aspect-ratio:.73;cursor:none;border:1px solid rgba(0,0,0,.07);transition:box-shadow .5s;}
+.dpc:hover{box-shadow:0 60px 120px rgba(0,0,0,.22);}
+.dpc-bg{position:absolute;inset:-8%;transition:transform .7s cubic-bezier(.23,1,.32,1);}
+.dpc:hover .dpc-bg{transform:scale(1.08);}
+.dpc-dots{position:absolute;inset:0;background-image:radial-gradient(circle,currentColor 1px,transparent 1px);background-size:28px 28px;opacity:.08;transition:opacity .5s;}
+.dpc:hover .dpc-dots{opacity:.16;}
+.dpc-num{position:absolute;top:22px;right:22px;font-size:10px;letter-spacing:2px;opacity:.2;}
+.dpc-base{position:absolute;inset:0;padding:26px;display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(to top,rgba(4,4,4,.97) 0%,rgba(4,4,4,.55) 45%,rgba(4,4,4,.1) 100%);transition:opacity .35s;}
+.dpc:hover .dpc-base{opacity:0;}
+.dpc-cat{font-size:9px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:8px;}
+.dpc-ttl{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;line-height:1.1;color:var(--white);}
+.dpc-over{position:absolute;inset:0;padding:34px;display:flex;flex-direction:column;justify-content:center;background:rgba(4,4,4,.93);backdrop-filter:blur(14px);opacity:0;transition:opacity .4s cubic-bezier(.23,1,.32,1);}
+.dpc:hover .dpc-over{opacity:1;}
+.dpc-tag{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);padding:4px 10px;border-radius:100px;font-size:9px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--white);}
+.dpc-link{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;}
+.award-badge{position:absolute;top:20px;left:20px;z-index:3;background:rgba(6,6,6,.82);color:var(--white);padding:5px 11px;border-radius:100px;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border:1px solid rgba(255,255,255,.15);}
+@media(max-width:1024px){.hw-grid{grid-template-columns:1fr!important;} .dpc{aspect-ratio:auto!important;height:320px;}}
+
+/* testimonials */
+#h-testi{padding:80px 48px 120px;position:relative;}
+.ht-hdr{max-width:1280px;margin:0 auto 52px;}
+.ht-eyebrow{font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:rgba(6,6,6,.38);display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.ht-eyebrow::before{content:'';width:20px;height:1px;background:rgba(6,6,6,.22);display:block;}
+.ht-title{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,56px);font-weight:600;letter-spacing:-.5px;color:var(--black);}
+.tq-outer{overflow:hidden;margin:0 -48px;-webkit-mask-image:linear-gradient(90deg,transparent 0%,black 4%,black 96%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0%,black 4%,black 96%,transparent 100%);}
+.tq-track{display:flex;gap:18px;width:max-content;padding:0 48px;animation:tmq 38s linear infinite;}
+.tq-track:hover{animation-play-state:paused;}
+@keyframes tmq{to{transform:translateX(-50%);}}
+.tq-pill{flex-shrink:0;width:340px;border-radius:18px;padding:26px;display:flex;flex-direction:column;gap:16px;cursor:none;transition:transform .35s,box-shadow .35s;}
+.tq-pill:hover{transform:translateY(-5px);box-shadow:0 20px 56px rgba(6,6,6,.1);}
+.tq-head{display:flex;align-items:center;gap:12px;}
+.tq-av{width:38px;height:38px;border-radius:50%;background:rgba(6,6,6,.08);border:1px solid rgba(6,6,6,.06);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:600;color:var(--black);flex-shrink:0;}
+.tq-name{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;color:var(--black);}
+.tq-role{font-size:11px;color:rgba(6,6,6,.45);margin-top:2px;line-height:1.4;}
+.tq-text{font-size:13px;line-height:1.75;color:rgba(6,6,6,.62);}
+
+/* ─── WORK PAGE ─── */
+.ph-section{padding:150px 72px 60px;position:relative;z-index:1;}
+.ph-eyeb{display:flex;align-items:center;gap:12px;margin-bottom:28px;}
+.ph-line{width:28px;height:1px;background:var(--muted);}
+.ph-lbl{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);}
+.ph-ttl{font-family:'Cormorant Garamond',serif;font-size:clamp(3.5rem,7vw,6.5rem);font-weight:300;letter-spacing:-.025em;line-height:1;color:var(--dark);}
+.ph-ttl em{font-style:italic;color:var(--mid);}
+.ph-sub{font-size:1rem;color:var(--muted);max-width:440px;line-height:1.85;font-weight:300;margin-top:32px;}
+.filters{padding:0 72px 48px;display:flex;gap:12px;flex-wrap:wrap;}
+.fb{padding:9px 22px;border-radius:50px;border:1px solid var(--border);background:transparent;font-family:'Inter',sans-serif;font-size:.8rem;color:var(--muted);cursor:none;transition:all .3s;}
+.fb.act,.fb:hover{background:var(--dark);color:var(--cream);border-color:var(--dark);}
+.pgrid{padding:0 72px 120px;display:grid;grid-template-columns:repeat(2,1fr);gap:32px;}
+.pc{position:relative;border-radius:24px;overflow:hidden;text-decoration:none;color:inherit;cursor:none;display:block;opacity:0;transform:translateY(28px);transition:opacity .65s,transform .65s;}
+.pc.in{opacity:1;transform:none;}
+.pc.big{grid-column:span 2;}
+.pgrid.filt .pc.big{grid-column:span 1;}
+.pc-img{width:100%;height:360px;border-radius:24px;overflow:hidden;position:relative;}
+.pc-img-inner{width:100%;height:100%;transition:transform .6s;}
+.pc:hover .pc-img-inner{transform:scale(1.04);}
+.pc-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(19,16,24,.55),transparent 55%);opacity:0;transition:opacity .4s;}
+.pc:hover .pc-ov{opacity:1;}
+.pc-cta{position:absolute;bottom:28px;left:28px;display:flex;align-items:center;gap:10px;opacity:0;transform:translateY(8px);transition:opacity .35s,transform .35s;}
+.pc:hover .pc-cta{opacity:1;transform:none;}
+.pc-cta span{font-size:.82rem;color:#fff;}
+.pc-arrow{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;color:#fff;backdrop-filter:blur(6px);}
+.pc-info{padding:24px 4px 8px;}
+.pc-cats{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+.pc-cat{font-size:.67rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+.pc-cat+.pc-cat::before{content:'·';margin-right:8px;}
+.pc-title{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:400;color:var(--dark);transition:color .3s;}
+.pc:hover .pc-title{color:var(--mid);}
+.pc-brief{font-size:.84rem;color:var(--muted);margin-top:6px;font-weight:300;line-height:1.65;}
+
+/* ─── ABOUT PAGE ─── */
+.ab-grid{display:grid;grid-template-columns:1fr 1fr;min-height:100vh;padding-top:110px;}
+.ab-left{padding:80px 72px;border-right:1px solid var(--border);display:flex;flex-direction:column;justify-content:center;position:sticky;top:110px;height:calc(100vh - 110px);}
+.ab-eyeb{font-size:.67rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:12px;margin-bottom:24px;}
+.ab-eyeb::before{content:'';display:block;width:26px;height:1px;background:var(--muted);}
+.ab-ttl{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,5.5vw,5.5rem);font-weight:300;line-height:1.02;letter-spacing:-.025em;color:var(--dark);margin-bottom:32px;}
+.ab-ttl em{font-style:italic;color:var(--mid);}
+.ab-avatar{width:100%;max-width:320px;aspect-ratio:4/5;border-radius:20px;overflow:hidden;background:linear-gradient(145deg,var(--lavender),var(--rose),var(--peach));position:relative;margin-bottom:36px;}
+.ab-av-inner{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 30% 20%,rgba(255,255,255,.5),transparent 60%);}
+.ab-av-shape{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;padding:0 0 24px;}
+.av-init{font-family:'Cormorant Garamond',serif;font-size:5rem;font-weight:300;color:rgba(255,255,255,.6);letter-spacing:-.04em;}
+.ab-lnks{display:flex;gap:12px;flex-wrap:wrap;}
+.ab-lnk{padding:9px 20px;border-radius:50px;border:1px solid var(--border);font-size:.78rem;color:var(--muted);text-decoration:none;transition:all .3s;cursor:none;}
+.ab-lnk:hover{background:var(--dark);color:var(--cream);border-color:var(--dark);}
+.ab-right{padding:80px 72px;display:flex;flex-direction:column;gap:72px;}
+.ab-lbl{font-size:.67rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:20px;}
+.ab-txt{font-size:1rem;color:var(--text);line-height:1.85;font-weight:300;max-width:500px;}
+.ab-txt em{font-style:italic;color:var(--mid);}
+.sk-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;}
+.sk-pill{background:rgba(255,255,255,.6);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:10px;padding:14px 18px;transition:transform .3s,box-shadow .3s;}
+.sk-pill:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(207,192,247,.18);}
+.sk-name{font-size:.88rem;font-weight:400;color:var(--dark);margin-bottom:4px;}
+.sk-desc{font-size:.76rem;color:var(--muted);font-weight:300;}
+.tl{display:flex;flex-direction:column;margin-top:8px;}
+.tl-item{display:grid;grid-template-columns:64px 1fr;gap:20px;padding:22px 0;border-top:1px solid var(--border);}
+.tl-item:last-child{border-bottom:1px solid var(--border);}
+.tl-logo{width:52px;height:52px;border-radius:12px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;color:var(--muted);font-style:italic;flex-shrink:0;}
+.tl-m{background:linear-gradient(135deg,rgba(0,62,124,.08),rgba(0,62,124,.15));color:#003e7c;}
+.tl-p{background:linear-gradient(135deg,rgba(215,69,38,.08),rgba(215,69,38,.15));color:#d74526;}
+.tl-c{background:linear-gradient(135deg,rgba(100,180,140,.1),rgba(100,180,140,.2));color:#2e8b57;}
+.tl-3{background:linear-gradient(135deg,rgba(207,192,247,.2),rgba(245,194,206,.2));color:var(--mid);}
+.tlc-title{font-size:.92rem;font-weight:400;color:var(--dark);margin-bottom:2px;}
+.tlc-role{font-size:.8rem;font-weight:400;color:var(--mid);margin-bottom:6px;font-style:italic;}
+.tlc-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
+.tlc-tag{font-size:.7rem;padding:3px 10px;border-radius:20px;background:rgba(207,192,247,.18);border:1px solid var(--border);color:var(--muted);}
+.tlc-desc{font-size:.82rem;color:var(--muted);font-weight:300;line-height:1.6;}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.stat-box{background:rgba(255,255,255,.55);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:14px;padding:24px;text-align:center;transition:transform .3s;}
+.stat-box:hover{transform:translateY(-4px);}
+.sb-num{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:400;color:var(--dark);}
+.sb-desc{font-size:.76rem;color:var(--muted);margin-top:4px;font-weight:300;}
+.cta-blk{background:linear-gradient(135deg,rgba(207,192,247,.25),rgba(245,194,206,.2));border:1px solid var(--border);border-radius:20px;padding:40px;display:flex;align-items:center;justify-content:space-between;gap:32px;transition:transform .3s;}
+.cta-blk:hover{transform:translateY(-3px);}
+.cta-blk h3{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;color:var(--dark);margin-bottom:8px;}
+.cta-blk p{font-size:.86rem;color:var(--muted);font-weight:300;line-height:1.6;}
+.cta-btn-dk{background:var(--dark);color:var(--cream);padding:14px 32px;border-radius:50px;text-decoration:none;font-size:.84rem;font-weight:400;white-space:nowrap;cursor:none;border:none;font-family:'Inter',sans-serif;transition:transform .3s,box-shadow .3s;}
+.cta-btn-dk:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(19,16,24,.22);}
+
+/* ─── CONTACT PAGE ─── */
+.ct-grid{display:grid;grid-template-columns:1fr 1fr;min-height:100vh;padding-top:110px;}
+.ct-left{padding:80px 72px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid var(--border);}
+.ct-eyeb{font-size:.67rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:12px;margin-bottom:24px;}
+.ct-eyeb::before{content:'';display:block;width:26px;height:1px;background:var(--muted);}
+.ct-ttl{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,5vw,5rem);font-weight:300;line-height:1;letter-spacing:-.025em;color:var(--dark);margin-bottom:24px;}
+.ct-ttl em{font-style:italic;color:var(--mid);}
+.ct-sub{font-size:.95rem;color:var(--muted);line-height:1.85;max-width:400px;font-weight:300;margin-bottom:40px;}
+.avail{display:flex;align-items:center;gap:12px;background:rgba(157,224,182,.15);border:1px solid rgba(157,224,182,.35);border-radius:50px;padding:10px 18px;width:fit-content;margin-bottom:48px;}
+.avail-dot{width:8px;height:8px;border-radius:50%;background:#7dd9a4;animation:apulse 2.5s ease-in-out infinite;}
+@keyframes apulse{0%,100%{box-shadow:0 0 0 0 rgba(125,217,164,.5);}50%{box-shadow:0 0 0 6px rgba(125,217,164,0);}}
+.avail span{font-size:.78rem;color:#2d7a52;font-weight:400;}
+.ci-list{display:flex;flex-direction:column;gap:20px;}
+.ci-item{display:flex;align-items:center;gap:16px;}
+.ci-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.ci-lbl{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:2px;}
+.ci-val{font-size:.9rem;color:var(--dark);font-weight:400;}
+.ct-right{padding:80px 72px;display:flex;align-items:center;}
+.form-wrap{width:100%;}
+.form-ttl{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;color:var(--dark);margin-bottom:36px;}
+.ff{margin-bottom:22px;}
+.ff label{display:block;font-size:.7rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.ff input,.ff textarea,.ff select{width:100%;background:rgba(255,255,255,.6);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:12px;padding:14px 18px;font-family:'Inter',sans-serif;font-size:.9rem;color:var(--text);outline:none;appearance:none;transition:border-color .3s,box-shadow .3s;}
+.ff input:focus,.ff textarea:focus,.ff select:focus{border-color:rgba(207,192,247,.8);box-shadow:0 0 0 4px rgba(207,192,247,.15);}
+.ff textarea{resize:vertical;min-height:110px;line-height:1.6;}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.tchips{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;}
+.tchip{padding:8px 18px;border-radius:50px;border:1px solid var(--border);font-size:.78rem;color:var(--muted);cursor:none;background:transparent;font-family:'Inter',sans-serif;transition:all .25s;}
+.tchip.act,.tchip:hover{background:var(--lavender);border-color:var(--lavender);color:var(--mid);}
+.fsub{width:100%;padding:17px;border-radius:14px;background:var(--dark);color:var(--cream);border:none;font-family:'Inter',sans-serif;font-size:.92rem;cursor:none;margin-top:8px;transition:transform .3s,box-shadow .3s;}
+.fsub:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(19,16,24,.22);}
+.success-state{display:none;text-align:center;padding:48px 24px;}
+.success-state .s-icon{font-size:3rem;margin-bottom:20px;display:block;}
+.success-state h3{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:400;color:var(--dark);margin-bottom:12px;}
+.success-state p{color:var(--muted);line-height:1.7;font-size:.9rem;}
+.s-back{display:inline-block;margin-top:28px;color:var(--mid);text-decoration:none;font-size:.85rem;border-bottom:1px solid var(--border);padding-bottom:2px;cursor:none;}
+.s-back:hover{border-color:var(--mid);}
+
+/* ─── CASE STUDIES ─── */
+.cs-hero{padding:140px 72px 64px;position:relative;z-index:1;}
+.cs-back{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;color:var(--muted);cursor:none;margin-bottom:52px;transition:color .3s,gap .3s;background:none;border:none;font-family:'Inter',sans-serif;}
+.cs-back:hover{color:var(--dark);gap:12px;}
+.cs-eyeb{display:flex;align-items:center;gap:12px;margin-bottom:20px;justify-content:center;}
+.cs-eyeb-line{width:24px;height:1px;background:var(--muted);}
+.cs-eyeb span{font-size:.67rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);}
+.cs-ttl{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,5vw,5rem);font-weight:300;line-height:1.02;letter-spacing:-.025em;color:var(--dark);margin-bottom:24px;text-align:center;}
+.cs-ttl em{font-style:italic;color:var(--mid);}
+.cs-sub{font-size:1rem;color:var(--muted);font-weight:300;line-height:1.85;margin-bottom:28px;text-align:center;max-width:680px;margin-left:auto;margin-right:auto;}
+.cs-meta-row{display:inline-flex;flex-wrap:wrap;gap:0;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:rgba(255,255,255,.55);backdrop-filter:blur(12px);}
+.cs-meta-item{padding:16px 22px;border-right:1px solid var(--border);}
+.cs-meta-item:last-child{border-right:none;}
+.cs-meta-lbl{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:5px;}
+.cs-meta-val{font-size:.86rem;color:var(--dark);font-weight:400;}
+.cs-hero-img{padding:0 72px 80px;}
+.cs-hero-img img{width:100%;border-radius:24px;display:block;}
+.cs-sec{padding:64px 72px;border-top:1px solid var(--border);}
+.cs-sec-lbl{font-size:.67rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:12px;margin-bottom:28px;}
+.cs-sec-lbl::before{content:'';display:block;width:22px;height:1px;background:var(--muted);}
+.cs-sec-ttl{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:300;letter-spacing:-.015em;color:var(--dark);margin-bottom:24px;}
+.cs-sec-ttl em{font-style:italic;}
+.cs-body{font-size:.96rem;color:var(--text);line-height:1.9;font-weight:300;max-width:680px;margin-bottom:18px;}
+.cs-body em{font-style:italic;color:var(--mid);}
+.cs-2col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.cs-card{display:flex;align-items:flex-start;gap:16px;padding:20px 22px;border-radius:14px;}
+.cs-card .cc-icon{font-size:1.4rem;flex-shrink:0;margin-top:2px;}
+.cs-card .cc-ttl{font-size:.86rem;font-weight:500;color:var(--dark);margin-bottom:4px;}
+.cs-card .cc-desc{font-size:.8rem;color:var(--muted);font-weight:300;line-height:1.6;}
+.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px;}
+.res-card{background:rgba(255,255,255,.55);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:16px;padding:28px 24px;transition:transform .3s;}
+.res-card:hover{transform:translateY(-4px);}
+.res-badge{display:inline-block;border-radius:6px;padding:3px 10px;font-size:.72rem;font-weight:600;letter-spacing:.04em;white-space:nowrap;margin-bottom:10px;}
+.res-desc{font-size:.8rem;color:var(--muted);font-weight:300;line-height:1.5;}
+.cs-quote{border-left:3px solid var(--lavender);padding:20px 28px;margin:36px 0;background:rgba(207,192,247,.08);border-radius:0 12px 12px 0;}
+.cs-quote p{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:300;font-style:italic;color:var(--text);line-height:1.55;}
+.cs-quote cite{display:block;margin-top:12px;font-size:.76rem;color:var(--muted);font-style:normal;}
+.cs-reflection{background:linear-gradient(135deg,rgba(207,192,247,.15),rgba(176,236,216,.1));border:1px solid rgba(207,192,247,.25);border-radius:20px;padding:36px 40px;display:flex;gap:20px;align-items:flex-start;}
+.cs-reflection .bulb{font-size:2rem;flex-shrink:0;}
+.cs-reflection p{font-size:1rem;color:var(--text);font-weight:300;line-height:1.85;font-style:italic;}
+.cs-next{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:36px;}
+.cs-nc{border-radius:20px;overflow:hidden;cursor:none;transition:transform .3s;display:block;}
+.cs-nc:hover{transform:translateY(-5px);}
+.cs-ni{height:220px;}
+.cs-nl{font-size:.67rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;margin-top:16px;}
+.cs-nt{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400;color:var(--dark);}
+
+/* ─── FOOTER ─── */
+.sf{background:var(--dark);color:var(--cream);padding:80px 72px 48px;}
+.sf-top{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:64px;padding-bottom:64px;border-bottom:1px solid rgba(255,255,255,.1);}
+.sf-logo{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;display:block;color:var(--cream);margin-bottom:18px;}
+.sf-tagline{font-size:.84rem;color:rgba(255,255,255,.45);line-height:1.8;max-width:280px;font-weight:300;}
+.sf-badge{display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,.1);border-radius:50px;padding:10px 22px;margin-top:32px;}
+.sf-badge-dot{width:7px;height:7px;background:#6de89a;border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.sf-badge span{font-size:.75rem;color:rgba(255,255,255,.5);font-weight:300;}
+.sf-col h4{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:22px;font-weight:400;}
+.sf-col ul{list-style:none;display:flex;flex-direction:column;gap:12px;}
+.sf-col ul a{text-decoration:none;color:rgba(255,255,255,.55);font-size:.84rem;font-weight:300;transition:color .3s;cursor:none;}
+.sf-col ul a:hover{color:#fff;}
+.sf-bot{display:flex;align-items:center;justify-content:space-between;padding-top:40px;}
+.sf-copy{font-size:.78rem;color:rgba(255,255,255,.28);}
+.sf-sig{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(255,255,255,.3);font-size:.9rem;}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:1024px){
+  #nav{padding:20px 36px!important;}
+  .ph-section,.cs-hero{padding-left:36px!important;padding-right:36px!important;}
+  .cs-hero-img{padding-left:36px!important;padding-right:36px!important;}
+  .cs-sec{padding-left:36px!important;padding-right:36px!important;}
+  .filters,.pgrid{padding-left:36px!important;padding-right:36px!important;}
+  .pgrid{grid-template-columns:1fr!important;}
+  .pc.big{grid-column:span 1!important;}
+  .ab-grid{grid-template-columns:1fr!important;}
+  .ab-left{position:static!important;height:auto!important;border-right:none!important;border-bottom:1px solid var(--border);padding:80px 36px 48px!important;}
+  .ab-right{padding:48px 36px 80px!important;}
+  .ct-grid{grid-template-columns:1fr!important;}
+  .ct-left{border-right:none!important;border-bottom:1px solid var(--border);padding:80px 36px 48px!important;}
+  .ct-right{padding:48px 36px 80px!important;}
+  .sf{padding:60px 36px 40px!important;}
+  .sf-top{grid-template-columns:1fr 1fr!important;gap:40px!important;}
+  .sf-top>div:first-child{grid-column:span 2!important;}
+  .h-about-grid{grid-template-columns:1fr!important;}
+  #h-about{padding:100px 36px 60px!important;}
+  #h-work{padding:60px 36px 80px!important;}
+  #h-testi{padding:60px 0 80px!important;}
+  .ht-hdr{padding:0 36px!important;}
+  .tq-outer{margin:0 -36px!important;}
+  .cs-2col{grid-template-columns:1fr!important;}
+  .res-grid{grid-template-columns:1fr 1fr!important;}
+  .cs-next{grid-template-columns:1fr!important;}
+  .stats-row{grid-template-columns:1fr 1fr!important;}
+  .cta-blk{flex-direction:column!important;align-items:flex-start!important;}
+}
+@media(max-width:768px){
+  .ph-section,.cs-hero{padding-left:24px!important;padding-right:24px!important;padding-top:120px!important;}
+  .cs-hero-img{padding-left:24px!important;padding-right:24px!important;}
+  .cs-sec{padding-left:24px!important;padding-right:24px!important;}
+  .filters,.pgrid{padding-left:24px!important;padding-right:24px!important;}
+  .ab-left{padding:80px 24px 40px!important;}
+  .ab-right{padding:40px 24px 60px!important;gap:48px!important;}
+  .sk-grid{grid-template-columns:1fr!important;}
+  .ct-left{padding:80px 24px 40px!important;}
+  .ct-right{padding:40px 24px 60px!important;}
+  .frow{grid-template-columns:1fr!important;}
+  .sf{padding:48px 24px 36px!important;}
+  .sf-top{grid-template-columns:1fr!important;}
+  .sf-top>div:first-child{grid-column:span 1!important;}
+  .sf-bot{flex-direction:column!important;gap:12px!important;text-align:center!important;}
+  #h-about{padding:80px 24px 48px!important;}
+  #h-work{padding:48px 24px 64px!important;}
+  #h-testi{padding:48px 0 64px!important;}
+  .ht-hdr{padding:0 24px!important;}
+  .tq-outer{margin:0 -24px!important;}
+  .tq-pill{width:280px!important;}
+  .hw-grid{grid-template-columns:1fr!important;}
+  .dpc{aspect-ratio:auto!important;height:280px!important;}
+  .res-grid{grid-template-columns:1fr!important;}
+  .stats-row{grid-template-columns:1fr!important;}
+  .cs-meta-row{flex-direction:column!important;}
+  .cs-meta-item{border-right:none!important;border-bottom:1px solid var(--border)!important;}
+  .cs-meta-item:last-child{border-bottom:none!important;}
+}
+@media(hover:none){#cur,#cur2{display:none!important;}body{cursor:auto;}*{cursor:auto!important;}}
+</style>
+</head>
+<body>
+
+<div id="loader"><div class="ld-logo">sharayu.design</div><div class="ld-bar" id="ld-bar"></div></div>
+<div id="ovl"></div>
+<div id="cur" class="dk"></div>
+<div id="cur2" class="dk"></div>
+
+<!-- ═══ ZOOM HERO ═══ -->
+<div id="zhero">
+  <div class="zh-dots"></div>
+  <div class="zh-glow zh-g1"></div>
+  <div class="zh-glow zh-g2"></div>
+  <div id="zcopy">
+    <h1>Design impactful<br>user-first <em>experiences.</em></h1>
+    <p class="zs">UX/UI Designer · Melbourne, Australia</p>
+  </div>
+  <div class="zh-hint"><span>Scroll to enter</span><div class="zh-hline"></div></div>
+  <div class="zh-tap" id="zh-tap">Tap to enter →</div>
+  <div id="zcircle"></div>
+</div>
+
+<!-- ═══ NAV ═══ -->
+<nav id="nav" class="on-hero">
+  <a class="nlogo" id="nlogo" href="#">sharayu.design</a>
+  <ul class="nlinks">
+    <li><a id="nw" href="#" onclick="nav('work');return false;">Work</a></li>
+    <li><a id="na" href="#" onclick="nav('about');return false;">About</a></li>
+    <li><a class="ntalk" href="#" onclick="nav('contact');return false;"><span>Let's Talk</span></a></li>
+  </ul>
+</nav>
+
+<!-- ═══ SPA PAGES ═══ -->
+
+<!-- HOME -->
+<div class="pg show" id="pg-home">
+  <div style="position:relative;overflow:hidden;">
+    <div class="pblob pb1"></div>
+    <div class="pblob pb2"></div>
+    <div class="pblob pb3"></div>
+
+    <!-- ABOUT SECTION -->
+    <section id="h-about">
+      <div class="h-about-grid">
+        <div class="rv">
+          <p class="ha-eyebrow">Hello, I'm Sharayu</p>
+          <h2 class="ha-title">a UI/UX designer focused on simplifying complex digital systems.</h2>
+          <div class="ha-rule"></div>
+          <p class="ha-para">I combine research, product thinking, and visual design to create clear, intuitive digital experiences. I specialise in turning complex workflows into simple, structured interfaces.</p>
+          <div class="ha-btns">
+            <button class="btn-dk" onclick="nav('work')">View my work →</button>
+            <button class="btn-ol" onclick="nav('contact')">Get in touch</button>
+          </div>
+        </div>
+        <div class="ph-wrap rv">
+          <div class="ph-inner">
+            <div id="ph-frame">
+              <div id="ph-reveal">
+                <div class="rv-row"><div class="rv-num">4+</div><div class="rv-lbl">Years designing</div></div>
+                <div class="rv-row"><div class="rv-line"></div></div>
+                <div class="rv-row"><div class="rv-num">40+</div><div class="rv-lbl">Products shipped</div></div>
+                <div class="rv-row"><div class="rv-line"></div></div>
+                <div class="rv-row"><div class="rv-num">∞</div><div class="rv-lbl">Details obsessed over</div></div>
+              </div>
+              <div id="ph-base"><div class="ph-spin">⬡</div></div>
+              <span id="ph-hint">Hover to discover ✦</span>
+            </div>
+            <div class="ftag ft1"><span class="ftag-dot" style="background:var(--p1)"></span>UX Research</div>
+            <div class="ftag ft2"><span class="ftag-dot" style="background:var(--p3)"></span>Design Systems</div>
+            <div class="ftag ft3"><span class="ftag-dot" style="background:var(--p2)"></span>Product Strategy</div>
+            <div class="ftag ft4"><span class="ftag-dot" style="background:var(--p4)"></span>UI Design</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORK CARDS -->
+    <section id="h-work">
+      <div class="hw-hdr rv">
+        <div><p class="hw-eyebrow">Selected Work</p><h2 class="hw-title">Design that delivers impact.</h2></div>
+        <button class="btn-dk" onclick="nav('work')">View all work →</button>
+      </div>
+      <div class="hw-grid">
+        <!-- Card 1 -->
+        <div class="dpc rv" onclick="cs('bloom')" style="cursor:none;">
+          <div class="dpc-bg" style="background:radial-gradient(circle at 30% 40%,#2a0a18,#0d0308,#1a0510);"></div>
+          <div class="dpc-dots" style="color:#ffb3c6;"></div>
+          <span class="dpc-num" style="color:#ffb3c6;">01</span>
+          <div class="dpc-base"><span class="dpc-cat" style="color:#ffb3c6;">UI / UX · Web App</span><h3 class="dpc-ttl">Government Treasury<br>Finance Platform</h3></div>
+          <div class="dpc-over">
+            <h3 style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:#f5f0eb;margin-bottom:10px;">Government Treasury Finance Platform</h3>
+            <p style="font-size:13px;line-height:1.75;color:rgba(245,240,235,.5);margin-bottom:18px;">Redesigned a legacy government treasury platform — improving usability, streamlining approvals, and enhancing compliance workflows.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;"><span class="dpc-tag">Enterprise UX</span><span class="dpc-tag">PwC</span><span class="dpc-tag">4 Months</span></div>
+            <span class="dpc-link" style="color:#ffb3c6;">View case study →</span>
+          </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="dpc rv" onclick="cs('prism')" style="cursor:none;transition-delay:.08s;">
+          <div class="award-badge">🏆 Award</div>
+          <div class="dpc-bg" style="background:radial-gradient(circle at 70% 30%,#0a0a2a,#03030e,#08081e);"></div>
+          <div class="dpc-dots" style="color:#c7ceea;"></div>
+          <span class="dpc-num" style="color:#c7ceea;">02</span>
+          <div class="dpc-base"><span class="dpc-cat" style="color:#c7ceea;">UI / UX · Mobile App</span><h3 class="dpc-ttl">Designing MSME<br>Banking at Scale</h3></div>
+          <div class="dpc-over">
+            <h3 style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:#f5f0eb;margin-bottom:10px;">Designing MSME Banking at Scale</h3>
+            <p style="font-size:13px;line-height:1.75;color:rgba(245,240,235,.5);margin-bottom:18px;">Enterprise MSME banking platform redesign spanning account generation, FD/RD flows, and core banking journeys. Won the Above & Beyond Award at PwC.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;"><span class="dpc-tag">Fintech</span><span class="dpc-tag">PwC</span><span class="dpc-tag">7 Months</span></div>
+            <span class="dpc-link" style="color:#c7ceea;">View case study →</span>
+          </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="dpc rv" onclick="cs('vera')" style="cursor:none;transition-delay:.16s;">
+          <div class="dpc-bg" style="background:radial-gradient(circle at 50% 60%,#0a1f0a,#030d03,#081408);"></div>
+          <div class="dpc-dots" style="color:#b5ead7;"></div>
+          <span class="dpc-num" style="color:#b5ead7;">03</span>
+          <div class="dpc-base"><span class="dpc-cat" style="color:#b5ead7;">UX Research · Enterprise</span><h3 class="dpc-ttl">Enhancing POS &amp;<br>Billing Experience</h3></div>
+          <div class="dpc-over">
+            <h3 style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:#f5f0eb;margin-bottom:10px;">POS &amp; Billing for a Global Restaurant Corporation</h3>
+            <p style="font-size:13px;line-height:1.75;color:rgba(245,240,235,.5);margin-bottom:18px;">Field-led UX research uncovering operational breakdowns in a high-volume, multi-format enterprise POS system under peak demand.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;"><span class="dpc-tag">UX Research</span><span class="dpc-tag">Food &amp; FMCG</span></div>
+            <span class="dpc-link" style="color:#b5ead7;">View case study →</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section id="h-testi">
+      <div class="ht-hdr rv"><p class="ht-eyebrow">From people I've worked with.</p><h2 class="ht-title">Recognition &amp; Kind Words.</h2></div>
+      <div class="tq-outer">
+        <div class="tq-track">
+          <div class="tq-pill" style="background:rgba(255,179,198,.2);border:1px solid rgba(255,179,198,.35);"><div class="tq-head"><div class="tq-av">KT</div><div><div class="tq-name">Kunjal Thakkar</div><div class="tq-role">Director, Experience Consulting · PwC</div></div></div><p class="tq-text">"Recognised with the Above and Beyond Award for demonstrating strong UX leadership, problem-solving, and stakeholder collaboration on a complex MSME banking platform."</p></div>
+          <div class="tq-pill" style="background:rgba(199,206,234,.22);border:1px solid rgba(199,206,234,.38);"><div class="tq-head"><div class="tq-av">PS</div><div><div class="tq-name">Prateek Sinha</div><div class="tq-role">Partner, Experience Consulting · PwC</div></div></div><p class="tq-text">"Your ability to manage multiple stakeholders and deliver high-quality design work under tight timelines was highly appreciated."</p></div>
+          <div class="tq-pill" style="background:rgba(181,234,215,.2);border:1px solid rgba(181,234,215,.35);"><div class="tq-head"><div class="tq-av">TW</div><div><div class="tq-name">Trev Wood</div><div class="tq-role">Senior Manager, Educational Platforms · Monash University</div></div></div><p class="tq-text">"Sharayu led AI-focused research for Moodle, combining user discovery and platform analysis to deliver insights that directly influenced our AI roadmap."</p></div>
+          <div class="tq-pill" style="background:rgba(255,218,193,.22);border:1px solid rgba(255,218,193,.38);"><div class="tq-head"><div class="tq-av">JM</div><div><div class="tq-name">Dr. Joel Moore</div><div class="tq-role">Director, Monash Innovation Guarantee · Monash University</div></div></div><p class="tq-text">"Awarded the Resilience Award for exceptional teamwork, communication, and adaptability in navigating unexpected challenges."</p></div>
+          <div class="tq-pill" style="background:rgba(255,179,198,.2);border:1px solid rgba(255,179,198,.35);"><div class="tq-head"><div class="tq-av">KT</div><div><div class="tq-name">Kunjal Thakkar</div><div class="tq-role">Director, Experience Consulting · PwC</div></div></div><p class="tq-text">"Recognised with the Above and Beyond Award for demonstrating strong UX leadership, problem-solving, and stakeholder collaboration on a complex MSME banking platform."</p></div>
+          <div class="tq-pill" style="background:rgba(199,206,234,.22);border:1px solid rgba(199,206,234,.38);"><div class="tq-head"><div class="tq-av">PS</div><div><div class="tq-name">Prateek Sinha</div><div class="tq-role">Partner, Experience Consulting · PwC</div></div></div><p class="tq-text">"Your ability to manage multiple stakeholders and deliver high-quality design work under tight timelines was highly appreciated."</p></div>
+          <div class="tq-pill" style="background:rgba(181,234,215,.2);border:1px solid rgba(181,234,215,.35);"><div class="tq-head"><div class="tq-av">TW</div><div><div class="tq-name">Trev Wood</div><div class="tq-role">Senior Manager, Educational Platforms · Monash University</div></div></div><p class="tq-text">"Sharayu led AI-focused research for Moodle, combining user discovery and platform analysis to deliver insights that directly influenced our AI roadmap."</p></div>
+          <div class="tq-pill" style="background:rgba(255,218,193,.22);border:1px solid rgba(255,218,193,.38);"><div class="tq-head"><div class="tq-av">JM</div><div><div class="tq-name">Dr. Joel Moore</div><div class="tq-role">Director, Monash Innovation Guarantee · Monash University</div></div></div><p class="tq-text">"Awarded the Resilience Award for exceptional teamwork, communication, and adaptability in navigating unexpected challenges."</p></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer class="sf"><div class="sf-top"><div><span class="sf-logo">sharayu.design</span><p class="sf-tagline">UX/UI designer crafting experiences that are as beautiful as they are intuitive. Based in Melbourne, Australia.</p><div class="sf-badge"><div class="sf-badge-dot"></div><span>Available for new projects</span></div></div><div class="sf-col"><h4>Navigate</h4><ul><li><a href="#" onclick="nav('work');return false;">Work</a></li><li><a href="#" onclick="nav('about');return false;">About</a></li><li><a href="#" onclick="nav('contact');return false;">Let's Talk</a></li></ul></div><div class="sf-col"><h4>Connect</h4><ul><li><a href="mailto:hello.sharayu.design@gmail.com">hello.sharayu.design@gmail.com</a></li><li><a href="tel:+61424323385">+61 424 323 385</a></li><li><a href="#">LinkedIn</a></li></ul></div></div><div class="sf-bot"><p class="sf-copy">© 2026 sharayu.design. All rights reserved.</p><span class="sf-sig">Designed with intention.</span></div></footer>
+</div>
+
+<!-- WORK PAGE -->
+<div class="pg" id="pg-work">
+  <div class="ph-section">
+    <div class="ph-eyeb"><div class="ph-line"></div><span class="ph-lbl">Portfolio</span></div>
+    <h1 class="ph-ttl">Selected <em>work.</em></h1>
+    <p class="ph-sub">Designing scalable digital experiences through research, systems thinking, and visual craft.</p>
+  </div>
+  <div class="filters">
+    <button class="fb" data-f="all">All</button>
+    <button class="fb act" data-f="uiux">UI / UX</button>
+    <button class="fb" data-f="graphic">Brand &amp; Visual Systems</button>
+  </div>
+  <div class="pgrid" id="pgrid">
+    <a class="pc big rv" onclick="cs('bloom');return false;" href="#" data-c="uiux"><div class="pc-img"><div class="pc-img-inner" style="background:linear-gradient(135deg,#d6c8f8,#f5c6d2,#fce4b0);"><img src="https://i.ibb.co/QFLTkWVf/Hero-1.png" style="width:100%;height:100%;object-fit:cover;"></div><div class="pc-ov"></div><div class="pc-cta"><span>View Case Study</span><div class="pc-arrow">→</div></div></div><div class="pc-info"><div class="pc-cats"><span class="pc-cat">UI / UX</span><span class="pc-cat">Web App</span></div><div class="pc-title">Government Treasury Finance Platform Redesign</div><div class="pc-brief">Redesigned a legacy government treasury platform to improve usability, streamline approvals, and enhance compliance workflows.</div></div></a>
+    <a class="pc rv" onclick="cs('prism');return false;" href="#" data-c="uiux" style="transition-delay:.08s;position:relative;"><div style="position:absolute;top:16px;right:16px;background:linear-gradient(135deg,#f5c842,#f0a500);border-radius:50px;padding:4px 10px;z-index:10;font-size:.62rem;font-weight:700;color:#fff;letter-spacing:.06em;text-transform:uppercase;box-shadow:0 2px 8px rgba(240,165,0,.4);">🏆 Award</div><div class="pc-img"><div class="pc-img-inner" style="background:linear-gradient(135deg,#b4dcfc,#cfc0f7);"><img src="https://i.ibb.co/9mWHRk64/Hero.png" style="width:100%;height:100%;object-fit:cover;"></div><div class="pc-ov"></div><div class="pc-cta"><span>View Case Study</span><div class="pc-arrow">→</div></div></div><div class="pc-info"><div class="pc-cats"><span class="pc-cat">UI / UX</span><span class="pc-cat">Mobile App</span></div><div class="pc-title">Designing MSME Banking at Scale</div><div class="pc-brief">Enterprise MSME banking platform redesign spanning account and statement generation, app login, FD/RD flows, and core banking journeys.</div></div></a>
+    <a class="pc rv" onclick="cs('vera');return false;" href="#" data-c="uiux" style="transition-delay:.16s;"><div class="pc-img"><div class="pc-img-inner" style="background:linear-gradient(135deg,#b0edda,#b2d8fc);"><img src="https://i.ibb.co/3YMNZ8Dr/Research-H.png" style="width:100%;height:100%;object-fit:cover;"></div><div class="pc-ov"></div><div class="pc-cta"><span>View Case Study</span><div class="pc-arrow">→</div></div></div><div class="pc-info"><div class="pc-cats"><span class="pc-cat">UI / UX</span><span class="pc-cat">UX Research</span></div><div class="pc-title">Enhancing POS &amp; Billing Experience for a Global Restaurant Corporation</div><div class="pc-brief">Field-led UX research uncovering operational breakdowns in a multi-format enterprise POS system.</div></div></a>
+    <a class="pc big rv" onclick="cs('hive');return false;" href="#" data-c="uiux" style="transition-delay:.24s;"><div class="pc-img"><div class="pc-img-inner" style="background:linear-gradient(135deg,#b0edda,#cfc0f7);display:flex;align-items:center;justify-content:center;"><svg width="400" height="280" viewBox="0 0 560 300" fill="none"><rect x="60" y="30" width="200" height="240" rx="18" fill="rgba(255,255,255,0.45)"/><rect x="76" y="56" width="168" height="12" rx="5" fill="rgba(176,236,216,0.7)"/><rect x="76" y="96" width="168" height="60" rx="10" fill="rgba(255,255,255,0.5)"/><rect x="76" y="170" width="168" height="28" rx="8" fill="rgba(207,192,247,0.45)"/><rect x="300" y="30" width="200" height="110" rx="18" fill="rgba(255,255,255,0.4)"/><circle cx="340" cy="75" r="18" fill="rgba(176,236,216,0.55)"/><rect x="300" y="154" width="95" height="116" rx="18" fill="rgba(255,255,255,0.4)"/><rect x="405" y="154" width="95" height="116" rx="18" fill="rgba(255,255,255,0.35)"/></svg></div><div class="pc-ov"></div><div class="pc-cta"><span>View Case Study</span><div class="pc-arrow">→</div></div></div><div class="pc-info"><div class="pc-cats"><span class="pc-cat">UI / UX</span><span class="pc-cat">UX Research</span><span class="pc-cat">EdTech</span></div><div class="pc-title">Moodle Hive — AI-Powered Pre-Submission Feedback</div><div class="pc-brief">A research-led concept exploring AI-assisted formative feedback to improve learning outcomes within large-scale university LMS platforms.</div></div></a>
+    <a class="pc rv" onclick="cs('lumiere');return false;" href="#" data-c="graphic" style="transition-delay:.32s;"><div class="pc-img"><div class="pc-img-inner" style="background:linear-gradient(135deg,#f5c2ce,#cfc0f7);"><img src="https://i.ibb.co/sdKHf4q3/Hero-Sterling.png" style="width:100%;height:100%;object-fit:cover;"></div><div class="pc-ov"></div><div class="pc-cta"><span>View Case Study</span><div class="pc-arrow">→</div></div></div><div class="pc-info"><div class="pc-cats"><span class="pc-cat">Brand &amp; Visual Systems</span><span class="pc-cat">Print</span></div><div class="pc-title">Sterling Homes — Premium Promotional Collateral</div><div class="pc-brief">Premium promotional print collateral for an Australian home solutions company.</div></div></a>
+  </div>
+  <footer class="sf"><div class="sf-top"><div><span class="sf-logo">sharayu.design</span><p class="sf-tagline">Crafting thoughtful digital experiences.</p><div class="sf-badge"><div class="sf-badge-dot"></div><span>Available for new projects</span></div></div><div class="sf-col"><h4>Navigate</h4><ul><li><a href="#" onclick="nav('work');return false;">Work</a></li><li><a href="#" onclick="nav('about');return false;">About</a></li><li><a href="#" onclick="nav('contact');return false;">Let's Talk</a></li></ul></div><div class="sf-col"><h4>Connect</h4><ul><li><a href="mailto:hello.sharayu.design@gmail.com">hello.sharayu.design@gmail.com</a></li><li><a href="tel:+61424323385">+61 424 323 385</a></li><li><a href="#">LinkedIn</a></li></ul></div></div><div class="sf-bot"><p class="sf-copy">© 2026 sharayu.design. All rights reserved.</p><span class="sf-sig">Designed with intention.</span></div></footer>
+</div>
+
+<!-- ABOUT PAGE -->
+<div class="pg" id="pg-about">
+  <div class="ab-grid">
+    <div class="ab-left">
+      <div class="ab-eyeb">About me</div>
+      <h1 class="ab-ttl">Hello,<br>I'm <em>Sharayu.</em></h1>
+      <div class="ab-avatar"><div class="ab-av-inner"></div><div class="ab-av-shape"><span class="av-init">SD</span></div></div>
+      <div class="ab-lnks"><a class="ab-lnk" href="https://linkedin.com/in/sharayu-design" target="_blank">LinkedIn</a><a class="ab-lnk" href="#" onclick="nav('contact');return false;">Let's Talk →</a></div>
+    </div>
+    <div class="ab-right">
+      <div class="rv"><div class="ab-lbl">Who I am</div><p class="ab-txt">I'm a detail-driven designer with <em>4+ years of experience</em> delivering research-backed, user-centric digital experiences across banking, enterprise, retail, and consumer platforms. I specialize in transforming complex workflows and dense data into intuitive interfaces while ensuring usability, accessibility, and brand consistency.</p></div>
+      <div class="rv" style="transition-delay:.05s"><div class="ab-lbl">By the numbers</div><div class="stats-row" style="margin-top:8px"><div class="stat-box"><div class="sb-num">4+</div><div class="sb-desc">Years of experience</div></div><div class="stat-box"><div class="sb-num">40+</div><div class="sb-desc">Projects shipped</div></div><div class="stat-box"><div class="sb-num">18</div><div class="sb-desc">Happy clients</div></div></div></div>
+      <div class="rv" style="transition-delay:.1s"><div class="ab-lbl">Experience</div><div class="tl">
+        <div class="tl-item"><div class="tl-logo tl-m">M</div><div><div class="tlc-title">Monash University</div><div class="tlc-tags"><span class="tlc-tag">AI-enabled platforms</span><span class="tlc-tag">Research-driven design</span></div><div class="tlc-desc">Designed AI-enabled education tools within accessibility, usability, and compliance constraints.</div></div></div>
+        <div class="tl-item"><div class="tl-logo tl-p">PwC</div><div><div class="tlc-title">PricewaterhouseCoopers</div><div class="tlc-tags"><span class="tlc-tag">Enterprise UX</span><span class="tlc-tag">Financial systems</span></div><div class="tlc-desc">Contributed to multiple enterprise platforms supporting complex financial workflows.</div></div></div>
+        <div class="tl-item"><div class="tl-logo tl-c">CN</div><div><div class="tlc-title">CellNova</div><div class="tlc-role">Co-Founder &amp; Designer</div><div class="tlc-tags"><span class="tlc-tag">Zero-to-one</span><span class="tlc-tag">Brand identity</span></div><div class="tlc-desc">Led end-to-end design decisions across product strategy, UX systems, and brand foundations.</div></div></div>
+        <div class="tl-item"><div class="tl-logo tl-3">3M</div><div><div class="tlc-title">3 Minds Digital</div><div class="tlc-role">Graphic Designer</div><div class="tlc-tags"><span class="tlc-tag">Brand identity</span><span class="tlc-tag">Visual systems</span></div></div></div>
+      </div></div>
+      <div class="rv" style="transition-delay:.15s"><div class="ab-lbl">Strengths</div><div class="sk-grid">
+        <div class="sk-pill"><div class="sk-name">UX Research</div><div class="sk-desc">Interviews, diary studies, usability testing</div></div>
+        <div class="sk-pill"><div class="sk-name">UI Design</div><div class="sk-desc">High-fidelity screens, prototypes, motion</div></div>
+        <div class="sk-pill"><div class="sk-name">Design Systems</div><div class="sk-desc">Scalable component libraries &amp; tokens</div></div>
+        <div class="sk-pill"><div class="sk-name">Product Strategy</div><div class="sk-desc">IA, user journeys, competitive analysis</div></div>
+        <div class="sk-pill"><div class="sk-name">Accessibility</div><div class="sk-desc">WCAG compliance, inclusive design</div></div>
+        <div class="sk-pill"><div class="sk-name">Stakeholder Alignment</div><div class="sk-desc">Presentations, briefs, dev handoff</div></div>
+      </div></div>
+      <div class="rv" style="transition-delay:.2s"><div class="cta-blk"><div><h3>Want to work together?</h3><p>I'm currently taking on select new projects.</p></div><button class="cta-btn-dk" onclick="nav('contact')">Let's Talk →</button></div></div>
+    </div>
+  </div>
+  <footer class="sf"><div class="sf-top"><div><span class="sf-logo">sharayu.design</span><p class="sf-tagline">Crafting thoughtful digital experiences.</p><div class="sf-badge"><div class="sf-badge-dot"></div><span>Available for new projects</span></div></div><div class="sf-col"><h4>Navigate</h4><ul><li><a href="#" onclick="nav('work');return false;">Work</a></li><li><a href="#" onclick="nav('about');return false;">About</a></li><li><a href="#" onclick="nav('contact');return false;">Let's Talk</a></li></ul></div><div class="sf-col"><h4>Connect</h4><ul><li><a href="mailto:hello.sharayu.design@gmail.com">hello.sharayu.design@gmail.com</a></li><li><a href="tel:+61424323385">+61 424 323 385</a></li><li><a href="#">LinkedIn</a></li></ul></div></div><div class="sf-bot"><p class="sf-copy">© 2026 sharayu.design. All rights reserved.</p><span class="sf-sig">Designed with intention.</span></div></footer>
+</div>
+
+<!-- CONTACT PAGE -->
+<div class="pg" id="pg-contact">
+  <div class="ct-grid">
+    <div class="ct-left">
+      <div class="ct-eyeb">Get in Touch</div>
+      <h1 class="ct-ttl">Let's build<br>something <em>great.</em></h1>
+      <p class="ct-sub">Whether you have a fully-formed brief or just a spark of an idea — I'd love to hear about it. I respond within 24 hours.</p>
+      <div class="avail"><div class="avail-dot"></div><span>Available for new projects · 2026</span></div>
+      <div class="ci-list">
+        <div class="ci-item"><div class="ci-icon" style="background:rgba(207,192,247,.25);">📬</div><div><div class="ci-lbl">Email</div><div class="ci-val">hello.sharayu.design@gmail.com</div></div></div>
+        <div class="ci-item"><div class="ci-icon" style="background:rgba(176,236,216,.25);">📞</div><div><div class="ci-lbl">Phone</div><div class="ci-val">+61 424 323 385</div></div></div>
+        <div class="ci-item"><div class="ci-icon" style="background:rgba(245,194,206,.25);">📍</div><div><div class="ci-lbl">Based in</div><div class="ci-val">Australia · AEST</div></div></div>
+        <div class="ci-item"><div class="ci-icon" style="background:rgba(178,216,252,.25);font-size:.8rem;font-weight:600;color:var(--mid);">in</div><div><div class="ci-lbl">LinkedIn</div><div class="ci-val">linkedin.com/in/sharayu-design</div></div></div>
+      </div>
+    </div>
+    <div class="ct-right">
+      <div class="form-wrap">
+        <div id="form-body">
+          <div class="form-ttl">Tell me about your project.</div>
+          <div class="frow"><div class="ff"><label>First name</label><input type="text" placeholder="Jamie" id="fname"></div><div class="ff"><label>Last name</label><input type="text" placeholder="Laurent"></div></div>
+          <div class="ff"><label>Email address</label><input type="email" placeholder="jamie@company.com" id="femail"></div>
+          <div class="ff"><label>Project type</label><div class="tchips"><button class="tchip" onclick="selType(this)">Mobile App</button><button class="tchip" onclick="selType(this)">Web / SaaS</button><button class="tchip" onclick="selType(this)">Brand Identity</button><button class="tchip" onclick="selType(this)">Design System</button><button class="tchip" onclick="selType(this)">UX Audit</button><button class="tchip" onclick="selType(this)">Other</button></div></div>
+          <div class="ff"><label>Budget range</label><select><option value="" disabled selected>Select a range…</option><option>$5,000 – $10,000</option><option>$10,000 – $20,000</option><option>$20,000 – $40,000</option><option>$40,000+</option><option>Let's discuss</option></select></div>
+          <div class="ff"><label>Tell me more</label><textarea placeholder="Share what you're building, your timeline, and any specific challenges you're facing…"></textarea></div>
+          <button class="fsub" onclick="submitForm()">Send message →</button>
+        </div>
+        <div class="success-state" id="form-success"><span class="s-icon">✨</span><h3>Message received!</h3><p>Thanks for reaching out. I'll be in touch within 24 hours.</p><a class="s-back" href="#" onclick="nav('work');return false;">Explore my work →</a></div>
+      </div>
+    </div>
+  </div>
+  <footer class="sf"><div class="sf-top"><div><span class="sf-logo">sharayu.design</span><p class="sf-tagline">Crafting thoughtful digital experiences.</p><div class="sf-badge"><div class="sf-badge-dot"></div><span>Available for new projects</span></div></div><div class="sf-col"><h4>Navigate</h4><ul><li><a href="#" onclick="nav('work');return false;">Work</a></li><li><a href="#" onclick="nav('about');return false;">About</a></li><li><a href="#" onclick="nav('contact');return false;">Let's Talk</a></li></ul></div><div class="sf-col"><h4>Connect</h4><ul><li><a href="mailto:hello.sharayu.design@gmail.com">hello.sharayu.design@gmail.com</a></li><li><a href="tel:+61424323385">+61 424 323 385</a></li><li><a href="#">LinkedIn</a></li></ul></div></div><div class="sf-bot"><p class="sf-copy">© 2026 sharayu.design. All rights reserved.</p><span class="sf-sig">Designed with intention.</span></div></footer>
+</div>
+
+<!-- ═══ CASE STUDIES ═══ -->
+
+<!-- CS: TREASURY (bloom) -->
+<div class="cspg" id="cs-bloom">
+  <div class="cs-hero"><button class="cs-back" onclick="goback()">← Back to work</button>
+    <div style="text-align:center;max-width:720px;margin:0 auto;">
+      <div class="cs-eyeb"><div class="cs-eyeb-line"></div><span>UI / UX · Web App · Enterprise</span><div class="cs-eyeb-line"></div></div>
+      <h1 class="cs-ttl">Government Treasury<br><em>Finance Platform</em></h1>
+      <p class="cs-sub">Redesigned a legacy government treasury platform to improve usability, streamline approvals, and enhance compliance workflows for a state-level finance institution.</p>
+      <div class="cs-meta-row"><div class="cs-meta-item"><span class="cs-meta-lbl">Role</span><span class="cs-meta-val">Associate UI/UX Designer</span></div><div class="cs-meta-item"><span class="cs-meta-lbl">Company</span><span class="cs-meta-val">PwC · IFMS Project</span></div><div class="cs-meta-item"><span class="cs-meta-lbl">Duration</span><span class="cs-meta-val">4 Months</span></div><div class="cs-meta-item"><span class="cs-meta-lbl">Copyright</span><span class="cs-meta-val">PwC &amp; Its Client</span></div></div>
+    </div>
+  </div>
+  <div class="cs-hero-img"><img src="https://i.ibb.co/QFLTkWVf/Hero-1.png" alt="Treasury Platform" onerror="this.style.display='none'"></div>
+  <div class="cs-sec"><div class="cs-sec-lbl">My Contribution</div><h2 class="cs-sec-ttl">What I <em>worked on.</em></h2><p class="cs-body">I worked closely with treasury stakeholders to understand role-based financial workflows and usability gaps in the legacy system. These insights informed wireframe validation and design decisions to improve clarity, efficiency, and compliance.</p>
+  <div class="cs-2col" style="margin-top:24px;">
+    <div class="cs-card" style="background:rgba(207,192,247,.1);border:1px solid rgba(207,192,247,.25);"><span class="cc-icon">🎙️</span><div><div class="cc-ttl">Stakeholder Interviews</div><div class="cc-desc">Conducted user interviews with treasury officers to surface real workflow pain points.</div></div></div>
+    <div class="cs-card" style="background:rgba(245,194,206,.1);border:1px solid rgba(245,194,206,.3);"><span class="cc-icon">🔍</span><div><div class="cc-ttl">Usability Gap Analysis</div><div class="cc-desc">Identified gaps across approvals, reporting, and payment processes in the legacy system.</div></div></div>
+    <div class="cs-card" style="background:rgba(176,236,216,.1);border:1px solid rgba(176,236,216,.3);"><span class="cc-icon">✅</span><div><div class="cc-ttl">Wireframe Validation</div><div class="cc-desc">Validated system workflows through structured walkthroughs with officers at each stage.</div></div></div>
+    <div class="cs-card" style="background:rgba(178,216,252,.1);border:1px solid rgba(178,216,252,.3);"><span class="cc-icon">🤝</span><div><div class="cc-ttl">Cross-functional Collaboration</div><div class="cc-desc">Worked across teams to define a clear, role-based UI design aligned to compliance needs.</div></div></div>
+  </div></div>
+  <div class="cs-sec"><div class="cs-sec-lbl">Impact</div><h2 class="cs-sec-ttl">Results that <em>matter.</em></h2>
+  <div class="res-grid">
+    <div class="res-card"><div class="res-badge" style="background:rgba(207,192,247,.35);color:var(--mid);">99% User-Validated Workflows</div><div class="res-desc">Critical treasury flows validated directly with officers before engineering handoff.</div></div>
+    <div class="res-card"><div class="res-badge" style="background:rgba(176,236,216,.35);color:#2a7a5a;">Process Simplification</div><div class="res-desc">Approvals, payments, and reporting streamlined by removing unnecessary steps.</div></div>
+    <div class="res-card"><div class="res-badge" style="background:rgba(178,216,252,.35);color:#1a5a8a;">Senior Usability</div><div class="res-desc">Complexity reduced through focused data grouping for non-technical government users.</div></div>
+    <div class="res-card"><div class="res-badge" style="background:rgba(248,216,176,.45);color:#b07a2a;">100% State Scale</div><div class="res-desc">Designed for a high-risk, compliance-driven treasury platform at state level.</div></div>
+    <div class="res-card"><div class="res-badge" style="background:rgba(245,194,206,.4);color:#8a2a3a;">Delivery Ready</div><div class="res-desc">High-fidelity prototypes approved by stakeholders enabling smooth dev handoff.</div></div>
+    <div class="res-card"><div class="res-badge" style="background:rgba(207,192,247,.35);color:var(--mid);">Audit Confidence</div><div class="res-desc">Clearer role separation, traceable approval states, and structured information hierarchy.</div></div>
+  </div></div>
+  <div class="cs-sec"><div class="cs-sec-lbl">Portal Workflows</div><h2 class="cs-sec-ttl">Defining the <em>system flows.</em></h2><p class="cs-body">We re-iterated and refined application workflows in close collaboration with the engineering team, ensuring alignment with regulatory rules and compliance requirements.</p><img src="https://i.ibb.co/r2dP8K0S/Workflow.png" style="width:100%;border-radius:20px;margin-top:24px;" onerror="this.style.display='none'"></div>
+  <div class="cs-sec"><div class="cs-sec-lbl">Wireframes</div><h2 class="cs-sec-ttl">From flows to <em>frames.</em></h2><p class="cs-body">We progressed into the wireframing stage by defining end-to-end user flows in low-fidelity wireframes, followed by usability testing using higher-fidelity wireframes.</p><img src="https://i.ibb.co/tn4mJdy/Treasury-Wireframe.png" style="width:100%;border-radius:20px;margin-top:24px;" onerror="this.style.display='none'"></div>
+  <div class="cs-sec"><div class="cs-sec-lbl">UI Design</div><h2 class="cs-sec-ttl">Trust built through <em>visual language.</em></h2><p class="cs-body">In the final UI design phase, the platform was crafted to reflect core financial values — trust, security, reliability, and transparency — through a clean, structured visual language aligned with regulatory and banking standards.</p><img src="https://i.ibb.co/tPQFCX5g/Final-Fold.png" style="width:100%;border-radius:20px;margin-top:24px;" onerror="this.style.display='none'"></div>
+  <div class="cs-sec"><div class="cs-sec-lbl">Reflection</div><h2 class="cs-sec-ttl">What I <em>took away.</em></h2><div class="cs-reflection"><span class="bulb">💡</span><p>Learned to design scalable, compliant finance systems by translating complex treasury workflows into intuitive experiences through stakeholder alignment, data-driven decisions, and iterative usability testing.</p></div></div>
+  <div class="cs-sec" style="border-bottom:1px solid var(--border);"><div class="cs-sec-lbl">Next Projects</div><h2 class="cs-sec-ttl">More <em>work.</em></h2><div class="cs-next"><div class="cs-nc" onclick="cs('prism')"><div class="cs-ni" style="background:linear-gradient(160deg,#b4dcfc,#cfc0f7,#e3d0f8);"></div><div class="cs-nl">UI / UX · Mobile App</div><div class="cs-nt">MSME Banking Experience →</div></div><div class="cs-nc" onclick="cs('vera')"><div class="cs-ni" style="background:linear-gradient(135deg,#b0edda,#b2d8fc);"></div><div class="cs-nl">UI / UX · Research</div><div class="cs-nt">POS &amp; Restaurant Experience →</div></div></div></div>
+  <footer class="sf"><div class="sf-top"><div><span class="sf-logo">sharayu.design</span><p class="sf-tagline">Crafting thoughtful digital experiences.</p><div class="sf-badge"><div class="sf-badge-dot"></div><span>Available for new projects</span></div></div><div class="sf-col"><h4>Navigate</h4><ul><li><a href="#" onclick="nav('work');return false;">Work</a></li><li><a href="#" onclick="nav('about');return false;">About</a></li><li><a href="#" onclick="nav('contact');return false;">Let's Talk</a></li></ul></div><div class="sf-col"><h4>Connect</h4><ul><li><a href="mailto:hello.sharayu.design@gmail.com">hello.sharayu.design@gmail.com</a></li></ul></div></div><div class="sf-bot"><p class="sf-copy">© 2026 sharayu.design.</p><span class="sf-sig">Designed with intention.</span></div></footer>
+</div>
+
+<!-- CS: MSME BANKING (prism) -->
+<div class="cspg" id="cs-prism">
+  <div class="cs-hero"><button class="cs-back" onclick="goback()">← Back to work</button>
+    <div style="text-align:center;max-width:720px;margin:0 auto;">
+      <div class="cs-eyeb"><div class="cs-eyeb-line"></div><span>UI / UX · Mobile &amp; Web · Enterprise</span><div class="cs-eyeb-line"></div></div>
+      <div style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,rgba(245,200,66,.15),rgba(240,165,0,.1));border:1px solid rgba(240,165,0,.4);border-radius:50px;padding:8px 18px;margin-bottom:16px;"><span>🏆</span><span style="font-size:.75rem;font-weight:600;color:#b07a00;letter-spacing:.06em;text-transform:uppercase;">Above &amp; Beyond Award — PwC</span></div>
+      <h1 class="cs-ttl">Designing MSME<br><em>Banking at Scale</em></h1>
+      <p class="cs-sub">Enterprise MSME banking platform redesign spanning account and statement generation, app login, FD/RD flows, and core banking journeys, optimised for usability, compliance, and scalability across mobile and web.</p>
+      <div class="cs-meta-row"><div class="cs-meta-item"><span class="cs-meta-lbl">Role</span><span class="cs-meta-val">Associate UI Designer</span></div><div class="cs-meta-item"><span class="cs-meta-lbl">Company</span><span class="cs-meta-val">PwC · Private Banking</span></div><div class="cs-meta-item"><span class="cs-meta-lbl">Duration</span><span class="cs-meta-val">7 Months</span></div><div class="cs-meta-item"><span class="cs-meta-lbl">Copyright</span><span class="cs-meta-val">PwC &amp; Its Client</span></div></div>
+    </div>
+  </div>
+  <div class="cs-hero-img"><img src="https://i.ibb.co/9mWHRk64/Hero.png" alt="MSME Banking" onerror="this.style.display='none'"></div>
+  <div class="cs-sec"><div class="cs-sec-lbl">My Contribution</div><h2 class="cs-sec-ttl">What I <em>worked on.</em></h2><p class="cs-body">I worked as a UI Designer, leading the Account and Statement Generation stream. I owned UI design execution, visual hierarchy, interaction design, and client-ready prototyping. Worked in collaboration with tech teams on information architecture and workflows, while regularly validating design decisions with my manager and director.</p>
+  <div class="cs-2col" style="margin-top:24px;">
+    <div class="cs-card" style="background:rgba(207,192,247,.1);border:1px solid rgba(207,192,247,.25);"><span class="cc-icon">🎨</span><div><div class="cc-ttl">UI Design Execution</div><div class="cc-desc">Led visual hierarchy, interaction design, and component-level UI for Account &amp; Statement Generation.</div></div></div>
+    <div class="cs-card" style="background:rgba(176,236,216,.1);border:1px solid rgba(176,236,216,.25);"><span class="cc-icon">🤝</span><div><div class="cc-ttl">Cross-functional Collaboration</div><div class="cc-desc">Worked with tech teams on IA and workflows; validated decisions with manager and director.</div></div></div>
+    <div class="cs-card" style="background:rgba(178,216,252,.1);border:1px solid rgba(178,216,252,.25);"><span class="cc-icon">📱</span><div><div class="cc-ttl">Prototyping</div><div class="cc-desc">Delivered client-ready, high-fidelity prototypes for stakeholder presentation and development handoff.</div></div></div>
+    <div class="cs-card" style="background:rgba(248,216,176,.1);border:1px solid rgba(248,216,176,.25);"><span class="cc-icon">✅</span><div><div class="cc-ttl">Design Validation</div><div class="cc-desc">Continuously validated with internal stakeholders, client business teams, and senior leadership.</div></div></div>
+  </div></div>
+  <div class="cs-sec"><div class="cs-sec-lbl">Problem Space</div><h2 class="cs-sec-ttl">A gap in <em>MSME banking.</em></h2><div style="background:linear-gradient(135deg,rgba(245,194,206,.15),rgba(248,216,176,.1));border:1px solid rgba(245,194,206,.3);border-radius:16px;padding:28px 32px;"><p style="font-size:.95rem;color:var(--text);font-weight:300;line-height:1.85;">MSME customers lacked a dedicated banking app, making data handling and queries cumbersome. Manual processes and non-intuitive dashboards disproportionately affected MSME owners with varying technical literacy, increasing cognitive load during routine financial tasks.</p></div></div>
+  <div class="cs-sec"><div class="cs-sec-lbl">Information Architecture</div><h2 class="cs-sec-ttl">Translating complexity into <em>clarity.</em></h2><p class="cs-body">I collaborated with the tech team to interpret task-based information architecture and translate it into clear, role-specific UI designs.</p><img src="https://i.ibb.co/6JGFyXSx/CA-Journey.png" style="width:100%;border-radius:20px;margin-top:24px;" onerror="this.style.display='none'"></div>
+  <div class="cs-sec"><div class="cs-sec-lbl">Wireframes</div><h2 class="cs-sec-ttl">From flows to <em>frames.</em></h2><p class="cs-body">We progressed into the wireframing stage by translating defined requirements into end-to-end user flows, followed by validation through higher-fidelity wireframes aligned with the client's brand and compliance guidelines.</p><img src="https://i.ibb.co/W4mPpf47/IBL-Wireframe.png" style="width:100%;border-radius:20px;margin-top:24px;" onerror="this.style.display='none'"></div>
+  <div class="cs-sec"><div class="cs-sec-lbl">UI Design &amp; Prototyping</div><h2 class="cs-sec-ttl">Trust built through <em>visual language.</em></h2><p class="cs-body">I led design presentations to internal client stakeholders and tech teams, translating wireframes into polished, client-ready prototypes, strictly adhering to brand guidelines, accessibility standards, and compliance requirements.</p><img src="https://i.ibb.co/ZpYy938Q/footer.png" style="width:100%;border-radius:20px;margin-top:24px;" onerror="this.style.display='none'"></div>
+  <div class="cs-sec"><div class="cs-sec-lbl">Reflection</div><h2 class="cs-sec-ttl">What I <em>took away.</em></h2><div class="cs-reflection"><span class="bulb">💡</span><p>This project strengthened my ability to simplify complex enterprise workflows into clear, scalable interfaces. By working closely with cross-functional teams, I learned to balance system constraints, compliance needs, and usability.</p></div></div>
+  <div class="cs-sec" style="border-bottom:1px solid var(--border);"><div class="cs-sec-lbl">Next Projects</div><h2 class="cs-sec-ttl">More <em>work.</em></h2><div class="cs-next"><div class="cs-nc" onclick="cs('bloom')"><div class="cs-ni" style="background:linear-gradient(135deg,#d6c8f8,#f5c6d2,#f8ddb6);"></div><div class="cs-nl">UI / UX · Web App</div><div class="cs-nt">Government Treasury Platform →</div></div><div class="cs-nc" onclick="cs('vera')"><div class="cs-ni" style="background:linear-gradient(135deg,#b0edda,#b2d8fc);"></div><div class="cs-nl">UI / UX · Research</div><div class="cs-nt">POS &amp; Restaurant Experience →</div></div></div></div>
+  <footer class="sf"><div class="sf-top"><div><span class="sf-logo">sharayu.design</span><p class="sf-tagline">Crafting thoughtful digital experiences.</p><div class="sf-badge"><div class="sf-badge-dot"></div><span>Available for new projects</span></div></div><div class="sf-col"><h4>Navigate</h4><ul><li><a href="#" onclick="nav('work');return false;">Work</a></li><li><a href="#" onclick="nav('about');return false;">About</a></li><li><a href="#" onclick="nav('contact');return false;">Let's Talk</a></li></ul></div><div class="sf-col"><h4>Connect</h4><ul><li><a href="mailto:hello.sharayu.design@gmail.com">hello.sharayu.design@gmail.com</a></li></ul></div></div><div class="sf-bot"><p class="sf-copy">© 2026 sharayu.design.</p><span class="sf-sig">Designed with intention.</span></div></footer>
+</div>
+
+<!-- CS: POS RESEARCH (vera) -->
+<div class="cspg" id="cs-vera">
+  <div class="cs-hero"><button class="cs-back" onclick="goback()">← Back to work</button>
+    <div style="text-align:center;max-width:760px;margin:0 auto;">
+      <div class="cs-eyeb"><div class="cs-eyeb-line"></div><span>UX Research · Enterprise · POS &amp; Billing</span><div class="cs-eyeb-line"></div></div>
+      <h1 class="cs-ttl">Scaling Enterprise POS<br><em>Under Operational Pressure</em></h1>
+      <p class="cs-sub">A multi-format, high-volume restaurant enterprise experiencing operational strain as its legacy POS and billing system failed to scale with growing complexity.</p>
+      <div class="cs-meta-row"><div class="cs-meta-item"><span class="cs-meta-lbl">Role</span><span class="cs-meta-val">Associate UX Researcher</span></div><div class="cs-meta-item"><span class="cs-meta-lbl">Team</span><span class="cs-meta-val">Experience Consulting</span></div><div class="cs-meta-item"><span class="cs-meta-lbl">Duration</span><span class="cs-meta-val">3 Months</span></div><div class="cs-meta-item"><span class="cs-meta-lbl">Type</span><span class="cs-meta-val">Field-led Enterprise Research</span></div></div>
+    </div>
+  </div>
+  <div class="cs-hero-img"><img src="https://i.ibb.co/3YMNZ8Dr/Research-H.png" alt="POS Research" onerror="this.style.display='none'"></div>
+  <div class="cs-sec"><div class="cs-sec-lbl">My Role</div><h2 class="cs-sec-ttl">What I <em>worked on.</em></h2><p class="cs-body">As an Associate UX Researcher within the Experience Consulting team, I led field research initiatives and collaborated closely with operations and technology stakeholders. I was responsible for designing the research approach, conducting ethnographic inquiry, leading synthesis workshops, and translating behavioural insights into enterprise-aligned recommendations.</p>
+  <div class="cs-2col" style="margin-top:24px;">
+    <div class="cs-card" style="background:rgba(207,192,247,.1);border:1px solid rgba(207,192,247,.25);"><span class="cc-icon">👁️</span><div><div class="cc-ttl">Ethnographic &amp; Contextual Inquiry</div><div class="cc-desc">Designed the field observation framework and shadowed live billing, payment, and exception-handling workflows.</div></div></div>
+    <div class="cs-card" style="background:rgba(176,236,216,.1);border:1px solid rgba(176,236,216,.25);"><span class="cc-icon">🏪</span><div><div class="cc-ttl">User Immersions</div><div class="cc-desc">Interviewed store managers, frontline staff, and customers across QSR, franchise, airport, and transit outlets.</div></div></div>
+    <div class="cs-card" style="background:rgba(178,216,252,.1);border:1px solid rgba(178,216,252,.25);"><span class="cc-icon">🔬</span><div><div class="cc-ttl">Collaborative Synthesis</div><div class="cc-desc">Led synthesis workshops translating behavioural signals and system gaps into prioritised research findings.</div></div></div>
+    <div class="cs-card" style="background:rgba(248,216,176,.1);border:1px solid rgba(248,216,176,.25);"><span class="cc-icon">🗺️</span><div><div class="cc-ttl">Modernisation Roadmap</div><div class="cc-desc">Contributed to a phased POS modernisation roadmap presentation reviewed by senior leadership.</div></div></div>
+  </div></div>
+  <div class="cs-sec"><div class="cs-sec-lbl">Problem Space</div><h2 class="cs-sec-ttl">A system built for <em>yesterday's volume.</em></h2><div style="background:linear-gradient(135deg,rgba(245,194,206,.15),rgba(248,216,176,.1));border:1px solid rgba(245,194,206,.3);border-radius:16px;padding:28px 32px;margin-bottom:24px;"><p style="font-size:.95rem;color:var(--text);font-weight:300;line-height:1.85;">A legacy POS system originally designed for lower-volume, predictable workflows was failing to scale with growing operational complexity — creating mounting risk across operations, experience, and revenue integrity.</p></div><img src="https://i.ibb.co/5XQ7JB5j/H3.png" style="width:100%;border-radius:20px;" onerror="this.style.display='none'"></div>
+  <div class="cs-sec"><div class="cs-sec-lbl">Key Findings</div><h2 class="cs-sec-ttl">What we <em>discovered.</em></h2><p class="cs-body">During peak periods, manual contingencies added 2–4 minutes per transaction in some outlets — compounding staff load and customer frustration simultaneously.</p>
+  <div class="cs-2col" style="margin-top:24px;">
+    <div style="background:rgba(255,255,255,.6);border:1px solid var(--border);border-radius:16px;padding:24px;"><div style="font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mid);font-weight:600;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);">👷 Employee Experience</div><div style="display:flex;flex-direction:column;gap:9px;"><div style="display:flex;gap:10px;align-items:flex-start;"><span style="width:5px;height:5px;border-radius:50%;background:var(--mid);flex-shrink:0;margin-top:6px;"></span><span style="font-size:.82rem;color:var(--text);font-weight:300;line-height:1.55;">No unified, real-time view of sales, orders, and inventory</span></div><div style="display:flex;gap:10px;align-items:flex-start;"><span style="width:5px;height:5px;border-radius:50%;background:var(--mid);flex-shrink:0;margin-top:6px;"></span><span style="font-size:.82rem;color:var(--text);font-weight:300;line-height:1.55;">Paper-based reconciliation increased human error risk</span></div><div style="display:flex;gap:10px;align-items:flex-start;"><span style="width:5px;height:5px;border-radius:50%;background:var(--mid);flex-shrink:0;margin-top:6px;"></span><span style="font-size:.82rem;color:var(--text);font-weight:300;line-height:1.55;">POS downtimes triggered disruptive manual billing workflows</span></div></div></div>
+    <div style="background:rgba(255,255,255,.6);border:1px solid var(--border);border-radius:16px;padding:24px;"><div style="font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:#2a7a5a;font-weight:600;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);">🧑‍🤝‍🧑 Customer Experience</div><div style="display:flex;flex-direction:column;gap:9px;"><div style="display:flex;gap:10px;align-items:flex-start;"><span style="width:5px;height:5px;border-radius:50%;background:#2a7a5a;flex-shrink:0;margin-top:6px;"></span><span style="font-size:.82rem;color:var(--text);font-weight:300;line-height:1.55;">Inconsistent and opaque refund and cancellation experiences</span></div><div style="display:flex;gap:10px;align-items:flex-start;"><span style="width:5px;height:5px;border-radius:50%;background:#2a7a5a;flex-shrink:0;margin-top:6px;"></span><span style="font-size:.82rem;color:var(--text);font-weight:300;line-height:1.55;">Extended wait times during payment reconciliation lowered trust</span></div><div style="display:flex;gap:10px;align-items:flex-start;"><span style="width:5px;height:5px;border-radius:50%;background:#2a7a5a;flex-shrink:0;margin-top:6px;"></span><span style="font-size:.82rem;color:var(--text);font-weight:300;line-height:1.55;">Payment uncertainty significantly impacted perceived brand reliability</span></div></div></div>
+  </div><img src="https://i.ibb.co/n8wc3xMm/H2.png" style="width:100%;border-radius:20px;margin-top:24px;" onerror="this.style.display='none'"></div>
+  <div class="cs-sec"><div class="cs-sec-lbl">Reflection</div><h2 class="cs-sec-ttl">What I <em>took away.</em></h2><div class="cs-reflection"><span class="bulb">💡</span><p>This project reinforced that enterprise experience breakdowns rarely stem from isolated usability issues — they emerge from the interaction between systems, policies, and human behaviour under pressure.</p></div></div>
+  <div class="cs-sec" style="border-bottom:1px solid var(--border);"><div class="cs-sec-lbl">Next Projects</div><h2 class="cs-sec-ttl">More <em>work.</em></h2><div class="cs-next"><div class="cs-nc" onclick="cs('bloom')"><div class="cs-ni" style="background:linear-gradient(135deg,#d6c8f8,#f5c6d2,#f8ddb6);"></div><div class="cs-nl">UI / UX · Web App</div><div class="cs-nt">Government Treasury Platform →</div></div><div class="cs-nc" onclick="cs('prism')"><div class="cs-ni" style="background:linear-gradient(160deg,#b4dcfc,#cfc0f7);"></div><div class="cs-nl">UI / UX · Mobile App</div><div class="cs-nt">MSME Banking Experience →</div></div></div></div>
+  <footer class="sf"><div class="sf-top"><div><span class="sf-logo">sharayu.design</span><p class="sf-tagline">Crafting thoughtful digital experiences.</p><div class="sf-badge"><div class="sf-badge-dot"></div><span>Available for new projects</span></div></div><div class="sf-col"><h4>Navigate</h4><ul><li><a href="#" onclick="nav('work');return false;">Work</a></li><li><a href="#" onclick="nav('about');return false;">About</a></li><li><a href="#" onclick="nav('contact');return false;">Let's Talk</a></li></ul></div><div class="sf-col"><h4>Connect</h4><ul><li><a href="mailto:hello.sharayu.design@gmail.com">hello.sharayu.design@gmail.com</a></li></ul></div></div><div class="sf-bot"><p class="sf-copy">© 2026 sharayu.design.</p><span class="sf-sig">Designed with intention.</span></div></footer>
+</div>
+
+<!-- CS: MOODLE HIVE (hive) -->
+<div class="cspg" id="cs-hive">
+  <div class="cs-hero"><button class="cs-back" onclick="goback()">← Back to work</button>
+    <div style="text-align:center;max-width:760px;margin:0 auto;">
+      <div class="cs-eyeb"><div class="cs-eyeb-line"></div><span>UX Research · EdTech · Moodle LMS</span><div class="cs-eyeb-line"></div></div>
+      <h1 class="cs-ttl">Moodle Hive<br><em>AI-Powered Pre-Submission Feedback</em></h1>
+      <p class="cs-sub">A research-led concept exploring how AI-assisted, pre-submission feedback can improve learning outcomes and reduce student uncertainty within large-scale learning management systems.</p>
+      <div class="cs-meta-row"><div class="cs-meta-item"><span class="cs-meta-lbl">Role</span><span class="cs-meta-val">UX Researcher</span></div><div class="cs-meta-item"><span class="cs-meta-lbl">Company</span><span class="cs-meta-val">Monash University</span></div></div>
+    </div>
+  </div>
+  <div class="cs-sec"><div class="cs-sec-lbl">Problem</div><h2 class="cs-sec-ttl">Feedback that arrives <em>too late to matter.</em></h2><div style="background:linear-gradient(135deg,rgba(245,194,206,.15),rgba(248,216,176,.1));border:1px solid rgba(245,194,206,.3);border-radius:16px;padding:28px 32px;"><p style="font-size:.95rem;color:var(--text);font-weight:300;line-height:1.85;">In higher education, feedback is often delivered after grades are released — limiting its ability to support learning. Students report high uncertainty before deadlines, while tutors face increasing pressure to provide meaningful feedback at scale. Within Moodle, feedback tools prioritise submission and grading rather than learning progression.</p></div></div>
+  <div class="cs-sec"><div class="cs-sec-lbl">Design Objective</div><h2 class="cs-sec-ttl">Support learning <em>before the deadline.</em></h2><p class="cs-body">Design a pre-submission feedback experience that supports learning before assessment deadlines, reduces uncertainty without removing productive struggle, scales across units without increasing tutor workload, and integrates seamlessly into existing Moodle workflows.</p></div>
+  <div class="cs-sec"><div class="cs-sec-lbl">Key Insights</div><h2 class="cs-sec-ttl">What the research <em>revealed.</em></h2>
+  <div class="cs-2col" style="margin-top:24px;">
+    <div style="padding:24px;background:rgba(255,255,255,.65);border:1px solid var(--border);border-radius:16px;display:flex;gap:16px;align-items:flex-start;"><div style="width:42px;height:42px;border-radius:12px;background:rgba(207,192,247,.2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">🧠</div><div><div style="font-size:.88rem;font-weight:500;color:var(--dark);margin-bottom:5px;">Inconsistent Feedback Increases Cognitive Load</div><div style="font-size:.8rem;color:var(--muted);font-weight:300;line-height:1.6;">Students must repeatedly interpret new expectations for each unit, diverting effort away from learning.</div></div></div>
+    <div style="padding:24px;background:rgba(255,255,255,.65);border:1px solid var(--border);border-radius:16px;display:flex;gap:16px;align-items:flex-start;"><div style="width:42px;height:42px;border-radius:12px;background:rgba(176,236,216,.2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">🗂️</div><div><div style="font-size:.88rem;font-weight:500;color:var(--dark);margin-bottom:5px;">Learning Artefacts Are Disconnected</div><div style="font-size:.8rem;color:var(--muted);font-weight:300;line-height:1.6;">Drafts, rubrics, and feedback live in separate spaces, limiting meaningful iteration and reflection.</div></div></div>
+    <div style="padding:24px;background:rgba(255,255,255,.65);border:1px solid var(--border);border-radius:16px;display:flex;gap:16px;align-items:flex-start;"><div style="width:42px;height:42px;border-radius:12px;background:rgba(248,216,176,.2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">📅</div><div><div style="font-size:.88rem;font-weight:500;color:var(--dark);margin-bottom:5px;">Planning Tools Support Deadlines, Not Learning</div><div style="font-size:.8rem;color:var(--muted);font-weight:300;line-height:1.6;">Calendars and checklists track time but don't help students assess quality or readiness.</div></div></div>
+    <div style="padding:24px;background:rgba(255,255,255,.65);border:1px solid var(--border);border-radius:16px;display:flex;gap:16px;align-items:flex-start;"><div style="width:42px;height:42px;border-radius:12px;background:rgba(178,216,252,.2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">🙋</div><div><div style="font-size:.88rem;font-weight:500;color:var(--dark);margin-bottom:5px;">Students Want Guidance, Not Answers</div><div style="font-size:.8rem;color:var(--muted);font-weight:300;line-height:1.6;">Students value clarity, validation, and direction — rather than automated solutions that remove critical thinking.</div></div></div>
+  </div></div>
+  <div class="cs-sec"><div class="cs-sec-lbl">Reflection</div><h2 class="cs-sec-ttl">AI as a <em>learning partner.</em></h2><div class="cs-reflection"><span class="bulb">💡</span><p>This project reinforced the importance of designing AI as a learning partner rather than a shortcut. The most effective interventions were those that reduced uncertainty and supported reflection without removing productive struggle from the learning process.</p></div></div>
+  <div class="cs-sec" style="border-bottom:1px solid var(--border);"><div class="cs-sec-lbl">Next Projects</div><h2 class="cs-sec-ttl">More <em>work.</em></h2><div class="cs-next"><div class="cs-nc" onclick="cs('bloom')"><div class="cs-ni" style="background:linear-gradient(135deg,#d6c8f8,#f5c6d2,#f8ddb6);"></div><div class="cs-nl">UI / UX · Web App</div><div class="cs-nt">Government Treasury Platform →</div></div><div class="cs-nc" onclick="cs('prism')"><div class="cs-ni" style="background:linear-gradient(160deg,#b4dcfc,#cfc0f7);"></div><div class="cs-nl">UI / UX · Mobile App</div><div class="cs-nt">MSME Banking Experience →</div></div></div></div>
+  <footer class="sf"><div class="sf-top"><div><span class="sf-logo">sharayu.design</span><p class="sf-tagline">Crafting thoughtful digital experiences.</p><div class="sf-badge"><div class="sf-badge-dot"></div><span>Available for new projects</span></div></div><div class="sf-col"><h4>Navigate</h4><ul><li><a href="#" onclick="nav('work');return false;">Work</a></li><li><a href="#" onclick="nav('about');return false;">About</a></li><li><a href="#" onclick="nav('contact');return false;">Let's Talk</a></li></ul></div><div class="sf-col"><h4>Connect</h4><ul><li><a href="mailto:hello.sharayu.design@gmail.com">hello.sharayu.design@gmail.com</a></li></ul></div></div><div class="sf-bot"><p class="sf-copy">© 2026 sharayu.design.</p><span class="sf-sig">Designed with intention.</span></div></footer>
+</div>
+
+<!-- CS: STERLING HOMES (lumiere) -->
+<div class="cspg" id="cs-lumiere">
+  <div class="cs-hero"><button class="cs-back" onclick="goback()">← Back to work</button>
+    <div style="text-align:center;max-width:720px;margin:0 auto;">
+      <div class="cs-eyeb"><div class="cs-eyeb-line"></div><span>Brand &amp; Visual Systems · Print Design</span><div class="cs-eyeb-line"></div></div>
+      <h1 class="cs-ttl">Sterling Homes<br><em>Promotional Print Design</em></h1>
+      <p class="cs-sub">Premium promotional print collateral for an Australian home solutions company — designed to communicate interior offerings with clarity, craft, and brand confidence.</p>
+      <div class="cs-meta-row"><div class="cs-meta-item"><span class="cs-meta-lbl">Client</span><span class="cs-meta-val">Sterling Homes</span></div><div class="cs-meta-item"><span class="cs-meta-lbl">Type</span><span class="cs-meta-val">Promotional Print</span></div><div class="cs-meta-item"><span class="cs-meta-lbl">Region</span><span class="cs-meta-val">Australia</span></div></div>
+    </div>
+  </div>
+  <div class="cs-hero-img"><img src="https://i.ibb.co/sdKHf4q3/Hero-Sterling.png" alt="Sterling Homes" onerror="this.style.display='none'"></div>
+  <div class="cs-sec"><div class="cs-sec-lbl">Project Overview</div><h2 class="cs-sec-ttl">End-to-end interiors, <em>brought to print.</em></h2><p class="cs-body">Sterling Homes is an Australian home solutions company specialising in end-to-end residential interiors — kitchens, bathrooms, cabinetry, lighting, and storage. The objective was to design premium promotional print collateral that clearly communicates their interior solutions while reinforcing brand trust and craftsmanship.</p></div>
+  <div class="cs-sec"><div class="cs-sec-lbl">Problem</div><h2 class="cs-sec-ttl">Materials that didn't <em>work hard enough.</em></h2><div style="background:linear-gradient(135deg,rgba(245,194,206,.15),rgba(248,216,176,.1));border:1px solid rgba(245,194,206,.3);border-radius:16px;padding:28px 32px;"><p style="font-size:.95rem;color:var(--text);font-weight:300;line-height:1.85;">Existing sales materials lacked visual hierarchy and consistency, making it difficult for potential customers to quickly understand offerings during sales conversations. Sterling Homes needed print assets that were both aspirational and easy to scan in fast-paced, client-facing environments.</p></div></div>
+  <div class="cs-sec"><div class="cs-sec-lbl">Outcome</div><h2 class="cs-sec-ttl">Collateral that <em>earns trust.</em></h2>
+  <div class="res-grid">
+    <div class="res-card"><div class="res-badge" style="background:rgba(207,192,247,.35);color:var(--mid);">Cohesive System</div><div class="res-desc">Brochures and flyers aligned with Sterling Homes' brand positioning across all formats.</div></div>
+    <div class="res-card"><div class="res-badge" style="background:rgba(176,236,216,.35);color:#2a7a5a;">Improved Scanability</div><div class="res-desc">Clearer information hierarchy for homeowners and real-estate consultants reviewing options quickly.</div></div>
+    <div class="res-card"><div class="res-badge" style="background:rgba(248,216,176,.45);color:#b07a2a;">Sales Enablement</div><div class="res-desc">Sales teams can communicate inclusions and value more efficiently during client discussions.</div></div>
+  </div></div>
+  <div style="padding:0 72px 80px;"><img src="https://i.ibb.co/cB4c50z/sterling-footer.png" style="width:100%;border-radius:20px;display:block;" onerror="this.style.display='none'"></div>
+  <div class="cs-sec" style="border-bottom:1px solid var(--border);"><div class="cs-sec-lbl">Next Projects</div><h2 class="cs-sec-ttl">More <em>work.</em></h2><div class="cs-next"><div class="cs-nc" onclick="cs('bloom')"><div class="cs-ni" style="background:linear-gradient(135deg,#d6c8f8,#f5c6d2,#f8ddb6);"></div><div class="cs-nl">UI / UX · Web App</div><div class="cs-nt">Government Treasury Platform →</div></div><div class="cs-nc" onclick="cs('prism')"><div class="cs-ni" style="background:linear-gradient(160deg,#b4dcfc,#cfc0f7);"></div><div class="cs-nl">UI / UX · Mobile App</div><div class="cs-nt">MSME Banking Experience →</div></div></div></div>
+  <footer class="sf"><div class="sf-top"><div><span class="sf-logo">sharayu.design</span><p class="sf-tagline">Crafting thoughtful digital experiences.</p><div class="sf-badge"><div class="sf-badge-dot"></div><span>Available for new projects</span></div></div><div class="sf-col"><h4>Navigate</h4><ul><li><a href="#" onclick="nav('work');return false;">Work</a></li><li><a href="#" onclick="nav('about');return false;">About</a></li><li><a href="#" onclick="nav('contact');return false;">Let's Talk</a></li></ul></div><div class="sf-col"><h4>Connect</h4><ul><li><a href="mailto:hello.sharayu.design@gmail.com">hello.sharayu.design@gmail.com</a></li></ul></div></div><div class="sf-bot"><p class="sf-copy">© 2026 sharayu.design.</p><span class="sf-sig">Designed with intention.</span></div></footer>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════
+   CURSOR
+═══════════════════════════════════════════ */
+const CUR = document.getElementById('cur');
+const CUR2 = document.getElementById('cur2');
+let mx=0, my=0, lx=0, ly=0, curMode='dk';
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  CUR.style.left = mx+'px'; CUR.style.top = my+'px';
+});
+(function raf(){ lx+=(mx-lx)*.1; ly+=(my-ly)*.1; CUR2.style.left=lx+'px'; CUR2.style.top=ly+'px'; requestAnimationFrame(raf); })();
+
+function setMode(m){
+  curMode = m;
+  const h = CUR.classList.contains('hov');
+  CUR.className = m + (h?' hov':'');
+  CUR2.className = m;
+}
+function bindHover(root){
+  (root||document).querySelectorAll('a,button,.dpc,.pc,.tq-pill,.sk-pill,.stat-box,.ab-lnk,.cta-btn-dk,.cs-nc,.res-card,.fb,.tchip,.ntalk,.btn-dk,.btn-ol,.ph-inner').forEach(el=>{
+    if(el._hb) return; el._hb=true;
+    el.addEventListener('mouseenter',()=>{ CUR.className=curMode+' hov'; });
+    el.addEventListener('mouseleave',()=>{ CUR.className=curMode; });
+  });
+}
+bindHover();
+
+/* ═══════════════════════════════════════════
+   ZOOM HERO
+═══════════════════════════════════════════ */
+const ZHERO = document.getElementById('zhero');
+const ZCOPY = document.getElementById('zcopy');
+const ZCIRC = document.getElementById('zcircle');
+const NAV   = document.getElementById('nav');
+let zp = 0, zOpen = true;
+
+function applyZ(p){
+  ZCIRC.style.clipPath = `circle(${p*162}% at 50% 50%)`;
+  ZCOPY.style.opacity  = Math.max(0, 1-p*3.2);
+  ZCOPY.style.transform= `scale(${1+p*.13})`;
+  ZCOPY.style.filter   = `blur(${p*14}px)`;
+}
+
+function openSite(){
+  if(!zOpen) return;
+  zOpen = false;
+  ZHERO.classList.add('out');
+  setTimeout(()=>{ ZHERO.style.display='none'; }, 600);
+  NAV.className = 'light';
+  setMode('lt');
+  window.removeEventListener('wheel', onWheel);
+  bindHover(document.body);
+  revealOnScreen();
+}
+
+function onWheel(e){
+  e.preventDefault();
+  zp = Math.min(1, Math.max(0, zp + e.deltaY*.0009));
+  applyZ(zp);
+  if(zp >= .98) openSite();
+}
+window.addEventListener('wheel', onWheel, {passive:false});
+
+let ty0=null;
+window.addEventListener('touchstart', e=>{ if(zOpen) ty0=e.touches[0].clientY; },{passive:true});
+window.addEventListener('touchmove', e=>{
+  if(!zOpen||ty0===null) return;
+  e.preventDefault();
+  zp = Math.min(1, Math.max(0, zp + (ty0-e.touches[0].clientY)*.003));
+  ty0 = e.touches[0].clientY;
+  applyZ(zp);
+  if(zp>=.98) openSite();
+},{passive:false});
+document.getElementById('zh-tap').addEventListener('click', openSite);
+
+/* ═══════════════════════════════════════════
+   SPA NAVIGATION
+═══════════════════════════════════════════ */
+let curPg = 'home', prevPg = 'work';
+
+function showPage(id){
+  document.querySelectorAll('.pg,.cspg').forEach(p=>p.classList.remove('show'));
+  const el = document.getElementById(id);
+  if(el) el.classList.add('show');
+}
+
+/* logo: on home → rewind to zoom hero; on other pages → go home */
+document.getElementById('nlogo').addEventListener('click', e=>{
+  e.preventDefault();
+  if(zOpen) return; /* still on hero, do nothing */
+  if(curPg === 'home'){
+    /* rewind back to zoom hero */
+    zOpen = true; zp = 0;
+    ZHERO.style.display = 'block';
+    ZHERO.style.transition = 'none';
+    ZHERO.style.opacity = '1';
+    ZHERO.classList.remove('out');
+    /* reset copy */
+    ZCOPY.style.opacity = '0';
+    ZCOPY.style.transform = 'scale(1.13)';
+    ZCOPY.style.filter = 'blur(14px)';
+    /* collapse circle */
+    ZCIRC.style.transition = 'clip-path .85s cubic-bezier(.77,0,.18,1)';
+    ZCIRC.style.clipPath = 'circle(0% at 50% 50%)';
+    setTimeout(()=>{
+      ZCIRC.style.transition = '';
+      ZCOPY.style.transition = 'opacity .6s, transform .6s, filter .6s';
+      ZCOPY.style.opacity = '1';
+      ZCOPY.style.transform = 'scale(1)';
+      ZCOPY.style.filter = 'blur(0)';
+      setTimeout(()=>{ ZCOPY.style.transition = ''; }, 700);
+    }, 900);
+    NAV.className = 'on-hero';
+    setMode('dk');
+    window.scrollTo(0, 0);
+    window.addEventListener('wheel', onWheel, {passive:false});
+  } else {
+    nav('home');
+  }
+});
+
+function nav(page){
+  /* if hero still open, open the site first then navigate */
+  if(zOpen){ openSite(); setTimeout(()=>nav(page),650); return; }
+
+  const OVL = document.getElementById('ovl');
+  OVL.classList.add('show');
+  setTimeout(()=>{
+    if(page==='home'){
+      showPage('pg-home');
+    } else {
+      showPage('pg-'+page);
+    }
+    prevPg = curPg; curPg = page;
+    window.scrollTo(0,0);
+
+    /* nav active states */
+    document.getElementById('nw').classList.toggle('act', page==='work');
+    document.getElementById('na').classList.toggle('act', page==='about');
+
+    /* nav colour */
+    const footer = document.querySelector('.pg.show .sf, .cspg.show .sf');
+    NAV.className = 'light';
+
+    /* work page filter reset */
+    if(page==='work'){
+      document.querySelectorAll('.fb').forEach(b=>b.classList.remove('act'));
+      document.querySelector('.fb[data-f="uiux"]').classList.add('act');
+      document.getElementById('pgrid').classList.add('filt');
+      document.querySelectorAll('.pc').forEach(c=>{
+        c.style.display = (c.dataset.c||'').includes('uiux')?'':'none';
+      });
+    }
+
+    revealOnScreen();
+    bindHover(document.body);
+    OVL.classList.remove('show');
+  }, 250);
+}
+
+function cs(slug){
+  if(zOpen){ openSite(); setTimeout(()=>cs(slug),650); return; }
+  const OVL = document.getElementById('ovl');
+  OVL.classList.add('show');
+  setTimeout(()=>{
+    prevPg = curPg.startsWith('cs-') ? 'work' : curPg;
+    showPage('cs-'+slug);
+    curPg = 'cs-'+slug;
+    window.scrollTo(0,0);
+    NAV.className = 'light';
+    document.getElementById('nw').classList.remove('act');
+    document.getElementById('na').classList.remove('act');
+    revealOnScreen();
+    bindHover(document.body);
+    OVL.classList.remove('show');
+  }, 250);
+}
+
+function goback(){
+  nav(prevPg==='home' ? 'work' : prevPg);
+}
+
+/* ═══════════════════════════════════════════
+   SCROLL — nav colour + reveals
+═══════════════════════════════════════════ */
+window.addEventListener('scroll', ()=>{
+  if(zOpen) return;
+  const footer = document.querySelector('.pg.show .sf, .cspg.show .sf');
+  const inFt = footer && footer.getBoundingClientRect().top <= window.innerHeight*.5;
+  NAV.className = inFt ? 'dark' : 'light';
+  setMode(inFt ? 'dk' : 'lt');
+  revealOnScreen();
+}, {passive:true});
+
+/* ═══════════════════════════════════════════
+   REVEAL ON SCREEN
+═══════════════════════════════════════════ */
+function revealOnScreen(){
+  setTimeout(()=>{
+    document.querySelectorAll('.rv:not(.in)').forEach(el=>{
+      if(el.getBoundingClientRect().top < window.innerHeight*.92) el.classList.add('in');
+    });
+    document.querySelectorAll('.dpc:not(.in),.pc:not(.in)').forEach(el=>{
+      if(el.getBoundingClientRect().top < window.innerHeight*.92) el.classList.add('in');
+    });
+  }, 60);
+}
+/* also run on intersection */
+new IntersectionObserver(entries=>entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); }),{threshold:.08})
+  .observe && document.querySelectorAll('.rv,.dpc,.pc').forEach(el=>{
+    new IntersectionObserver(entries=>entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); }),{threshold:.08}).observe(el);
+  });
+
+/* ═══════════════════════════════════════════
+   WORK PAGE FILTERS
+═══════════════════════════════════════════ */
+document.querySelectorAll('.fb').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.fb').forEach(b=>b.classList.remove('act'));
+    btn.classList.add('act');
+    const f = btn.dataset.f;
+    const grid = document.getElementById('pgrid');
+    f==='all' ? grid.classList.remove('filt') : grid.classList.add('filt');
+    document.querySelectorAll('.pc').forEach(c=>{
+      c.style.display = (f==='all'||(c.dataset.c||'').includes(f)) ? '' : 'none';
+    });
+  });
+});
+
+/* ═══════════════════════════════════════════
+   DARK PROJECT CARD TILT
+═══════════════════════════════════════════ */
+document.querySelectorAll('.dpc,.pc').forEach(card=>{
+  card.addEventListener('mousemove', function(e){
+    const r=this.getBoundingClientRect();
+    const dx=(e.clientX-r.left-r.width/2)/(r.width/2);
+    const dy=(e.clientY-r.top-r.height/2)/(r.height/2);
+    this.style.transform=`perspective(900px) rotateX(${-dy*5}deg) rotateY(${dx*5}deg) translateY(-8px)`;
+  });
+  card.addEventListener('mouseleave', function(){ this.style.transform=''; });
+});
+
+/* ═══════════════════════════════════════════
+   FORM
+═══════════════════════════════════════════ */
+function selType(el){ document.querySelectorAll('.tchip').forEach(c=>c.classList.remove('act')); el.classList.add('act'); }
+function submitForm(){
+  const n=document.getElementById('fname').value, e=document.getElementById('femail').value;
+  if(!n){ document.getElementById('fname').style.borderColor='rgba(245,194,206,.8)'; return; }
+  if(!e){ document.getElementById('femail').style.borderColor='rgba(245,194,206,.8)'; return; }
+  const fb=document.getElementById('form-body'); fb.style.opacity='0';
+  setTimeout(()=>{ fb.style.display='none'; document.getElementById('form-success').style.display='block'; },400);
+}
+
+/* ═══════════════════════════════════════════
+   LOADER
+═══════════════════════════════════════════ */
+window.addEventListener('load',()=>{
+  document.getElementById('ld-bar').style.width='100%';
+  setTimeout(()=>{
+    const ld=document.getElementById('loader');
+    ld.classList.add('gone');
+    setTimeout(()=>ld.style.display='none',450);
+  }, 900);
+});
+</script>
+</body>
+</html>
