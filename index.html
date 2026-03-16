@@ -167,9 +167,9 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);ov
 .hw-eyebrow{font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:rgba(6,6,6,.32);display:flex;align-items:center;gap:10px;margin-bottom:10px;}
 .hw-eyebrow::before{content:'';width:20px;height:1px;background:rgba(6,6,6,.22);display:block;}
 .hw-title{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4.5vw,60px);font-weight:600;letter-spacing:-.5px;color:var(--black);}
-.hw-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.hw-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
 /* dark project card */
-.dpc{border-radius:20px;overflow:hidden;position:relative;aspect-ratio:.73;cursor:none;border:1px solid rgba(0,0,0,.07);transition:box-shadow .5s;}
+.dpc{border-radius:20px;overflow:hidden;position:relative;aspect-ratio:1.4;cursor:none;border:1px solid rgba(0,0,0,.07);transition:box-shadow .5s;}
 .dpc:hover{box-shadow:0 60px 120px rgba(0,0,0,.22);}
 .dpc-bg{position:absolute;inset:-8%;transition:transform .7s cubic-bezier(.23,1,.32,1);}
 .dpc:hover .dpc-bg{transform:scale(1.08);}
@@ -185,7 +185,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);ov
 .dpc-tag{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);padding:4px 10px;border-radius:100px;font-size:9px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--white);}
 .dpc-link{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;}
 .award-badge{position:absolute;top:20px;left:20px;z-index:3;background:rgba(6,6,6,.82);color:var(--white);padding:5px 11px;border-radius:100px;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border:1px solid rgba(255,255,255,.15);}
-@media(max-width:1024px){.hw-grid{grid-template-columns:1fr!important;} .dpc{aspect-ratio:auto!important;height:320px;}}
+@media(max-width:1024px){.hw-grid{grid-template-columns:1fr!important;} .dpc{aspect-ratio:auto!important;height:260px;}}
 
 /* testimonials */
 #h-testi{padding:80px 48px 120px;position:relative;}
