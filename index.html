@@ -533,13 +533,13 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);ov
       </div>
       <div class="hw-grid">
         <!-- Card 1 -->
-<div class="dpc rv" onclick="cs('bloom')" style="cursor:none;aspect-ratio:auto;height:auto;">
-  <div style="position:relative;width:100%;overflow:hidden;">
-    <img src="https://i.ibb.co/QFLTkWVf/Hero-1.png" style="width:100%;height:auto;display:block;">
+<div class="dpc rv" onclick="cs('bloom')" style="cursor:none;">
+  <div class="dpc-bg" style="position:absolute;inset:-8%;background:radial-gradient(circle at 30% 40%,#2a0a18,#0d0308,#1a0510);transition:transform .7s cubic-bezier(.23,1,.32,1);overflow:hidden;">
+    <img src="https://i.ibb.co/QFLTkWVf/Hero-1.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;opacity:.55;display:block;">
   </div>
   <div class="dpc-dots" style="color:#ffb3c6;"></div>
   <span class="dpc-num" style="color:#ffb3c6;">01</span>
-  <div class="dpc-base" style="position:relative;inset:auto;padding:20px 24px;background:rgba(4,4,4,.92);"><span class="dpc-cat" style="color:#ffb3c6;">UI / UX · Web App</span><h3 class="dpc-ttl" style="white-space:nowrap;">Government Treasury Finance Platform</h3></div>
+  <div class="dpc-base"><span class="dpc-cat" style="color:#ffb3c6;">UI / UX · Web App</span><h3 class="dpc-ttl">Government Treasury<br>Finance Platform</h3></div>
   <div class="dpc-over">
     <h3 style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:#f5f0eb;margin-bottom:10px;">Government Treasury Finance Platform</h3>
     <p style="font-size:13px;line-height:1.75;color:rgba(245,240,235,.5);margin-bottom:18px;">Redesigned a legacy government treasury platform — improving usability, streamlining approvals, and enhancing compliance workflows.</p>
@@ -548,33 +548,37 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);ov
   </div>
 </div>
         <!-- Card 2 -->
-        <div class="dpc rv" onclick="cs('prism')" style="cursor:none;transition-delay:.08s;">
-          <div class="award-badge">🏆 Award</div>
-          <div class="dpc-bg" style="background:radial-gradient(circle at 70% 30%,#0a0a2a,#03030e,#08081e);"><img src="https://i.ibb.co/9mWHRk64/Hero.png" style="width:108%;height:108%;object-fit:cover;object-position:top;opacity:.55;"></div>
-          <div class="dpc-dots" style="color:#c7ceea;"></div>
-          <span class="dpc-num" style="color:#c7ceea;">02</span>
-          <div class="dpc-base"><span class="dpc-cat" style="color:#c7ceea;">UI / UX · Mobile App</span><h3 class="dpc-ttl">Designing MSME<br>Banking at Scale</h3></div>
-          <div class="dpc-over">
-            <h3 style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:#f5f0eb;margin-bottom:10px;">Designing MSME Banking at Scale</h3>
-            <p style="font-size:13px;line-height:1.75;color:rgba(245,240,235,.5);margin-bottom:18px;">Enterprise MSME banking platform redesign spanning account generation, FD/RD flows, and core banking journeys. Won the Above & Beyond Award at PwC.</p>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;"><span class="dpc-tag">Fintech</span><span class="dpc-tag">PwC</span><span class="dpc-tag">7 Months</span></div>
-            <span class="dpc-link" style="color:#c7ceea;">View case study →</span>
-          </div>
-        </div>
-        <!-- Card 3 -->
-        <div class="dpc rv" onclick="cs('vera')" style="cursor:none;transition-delay:.16s;">
-          <div class="dpc-bg" style="background:radial-gradient(circle at 50% 60%,#0a1f0a,#030d03,#081408);"></div>
-          <div class="dpc-dots" style="color:#b5ead7;"></div>
-          <span class="dpc-num" style="color:#b5ead7;">03</span>
-          <div class="dpc-base"><span class="dpc-cat" style="color:#b5ead7;">UX Research · Enterprise</span><h3 class="dpc-ttl">Enhancing POS &amp;<br>Billing Experience</h3></div>
-          <div class="dpc-over">
-            <h3 style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:#f5f0eb;margin-bottom:10px;">POS &amp; Billing for a Global Restaurant Corporation</h3>
-            <p style="font-size:13px;line-height:1.75;color:rgba(245,240,235,.5);margin-bottom:18px;">Field-led UX research uncovering operational breakdowns in a high-volume, multi-format enterprise POS system under peak demand.</p>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;"><span class="dpc-tag">UX Research</span><span class="dpc-tag">Food &amp; FMCG</span></div>
-            <span class="dpc-link" style="color:#b5ead7;">View case study →</span>
-          </div>
-        </div>
-      </div>
+<div class="dpc rv" onclick="cs('prism')" style="cursor:none;transition-delay:.08s;">
+  <div class="award-badge">🏆 Award</div>
+  <div class="dpc-bg" style="position:absolute;inset:-8%;transition:transform .7s cubic-bezier(.23,1,.32,1);overflow:hidden;">
+    <img src="https://i.ibb.co/9mWHRk64/Hero.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;display:block;">
+  </div>
+  <div class="dpc-dots" style="color:#c7ceea;"></div>
+  <span class="dpc-num" style="color:#c7ceea;">02</span>
+  <div class="dpc-base"><span class="dpc-cat" style="color:#c7ceea;">UI / UX · Mobile App</span><h3 class="dpc-ttl">Designing MSME<br>Banking at Scale</h3></div>
+  <div class="dpc-over">
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:#f5f0eb;margin-bottom:10px;">Designing MSME Banking at Scale</h3>
+    <p style="font-size:13px;line-height:1.75;color:rgba(245,240,235,.5);margin-bottom:18px;">Enterprise MSME banking platform redesign spanning account generation, FD/RD flows, and core banking journeys. Won the Above & Beyond Award at PwC.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;"><span class="dpc-tag">Fintech</span><span class="dpc-tag">PwC</span><span class="dpc-tag">7 Months</span></div>
+    <span class="dpc-link" style="color:#c7ceea;">View case study →</span>
+  </div>
+</div>
+<!-- Card 3 -->
+<div class="dpc rv" onclick="cs('vera')" style="cursor:none;transition-delay:.16s;">
+  <div class="dpc-bg" style="position:absolute;inset:-8%;transition:transform .7s cubic-bezier(.23,1,.32,1);overflow:hidden;">
+    <img src="https://i.ibb.co/3YMNZ8Dr/Research-H.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;display:block;">
+  </div>
+  <div class="dpc-dots" style="color:#b5ead7;"></div>
+  <span class="dpc-num" style="color:#b5ead7;">03</span>
+  <div class="dpc-base"><span class="dpc-cat" style="color:#b5ead7;">UX Research · Enterprise</span><h3 class="dpc-ttl">Enhancing POS &amp;<br>Billing Experience</h3></div>
+  <div class="dpc-over">
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:#f5f0eb;margin-bottom:10px;">POS &amp; Billing for a Global Restaurant Corporation</h3>
+    <p style="font-size:13px;line-height:1.75;color:rgba(245,240,235,.5);margin-bottom:18px;">Field-led UX research uncovering operational breakdowns in a high-volume, multi-format enterprise POS system under peak demand.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;"><span class="dpc-tag">UX Research</span><span class="dpc-tag">Food &amp; FMCG</span></div>
+    <span class="dpc-link" style="color:#b5ead7;">View case study →</span>
+  </div>
+</div>
+</div>
     </section>
 
     <!-- TESTIMONIALS -->
