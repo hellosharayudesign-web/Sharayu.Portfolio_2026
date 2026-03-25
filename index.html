@@ -1451,12 +1451,32 @@ document.querySelectorAll('.dpc,.pc').forEach(card=>{
    FORM
 ═══════════════════════════════════════════ */
 function selType(el){ document.querySelectorAll('.tchip').forEach(c=>c.classList.remove('act')); el.classList.add('act'); }
-function submitForm(){
+async function submitForm(){
   const n=document.getElementById('fname').value, e=document.getElementById('femail').value;
   if(!n){ document.getElementById('fname').style.borderColor='rgba(245,194,206,.8)'; return; }
   if(!e){ document.getElementById('femail').style.borderColor='rgba(245,194,206,.8)'; return; }
-  const fb=document.getElementById('form-body'); fb.style.opacity='0';
-  setTimeout(()=>{ fb.style.display='none'; document.getElementById('form-success').style.display='block'; },400);
+  
+  const btn = document.querySelector('.fsub');
+  btn.textContent = 'Sending…';
+  btn.disabled = true;
+
+  const res = await fetch('https://formspree.io/f/mgopwbaa', {
+    method: 'POST',
+    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      firstName: n,
+      email: e
+    })
+  });
+
+  if(res.ok){
+    const fb=document.getElementById('form-body'); fb.style.opacity='0';
+    setTimeout(()=>{ fb.style.display='none'; document.getElementById('form-success').style.display='block'; },400);
+  } else {
+    btn.textContent = 'Send message →';
+    btn.disabled = false;
+    alert('Something went wrong. Please try again.');
+  }
 }
 
 /* ═══════════════════════════════════════════
