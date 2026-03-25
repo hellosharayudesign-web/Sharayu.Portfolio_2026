@@ -60,7 +60,12 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);ov
 @keyframes hln{0%,100%{transform:scaleY(1);opacity:1;}50%{transform:scaleY(.35) translateY(14px);opacity:.15;}}
 #zcircle{position:absolute;inset:0;z-index:1;background:var(--grad);clip-path:circle(0% at 50% 50%);transition:clip-path .05s;}
 .zh-tap{display:none;position:absolute;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(255,179,198,.12);border:1px solid rgba(255,179,198,.3);border-radius:50px;padding:12px 28px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,179,198,.6);cursor:pointer;z-index:10;}
-@media(hover:none){.zh-hint{display:none;}.zh-tap{display:block;}}
+.ab-ttl .hello-line { font-size: 0.6em; display: block; opacity: 0.75; font-weight: 400; }
+.ab-avatar { aspect-ratio: 3 / 4; overflow: hidden; border-radius: 12px; margin-bottom: 20px; }
+.ab-txt { margin-top: 0; margin-bottom: 1em; line-height: 1.7; }
+.rv + .rv { margin-top: 28px; }
+  
+  @media(hover:none){.zh-hint{display:none;}.zh-tap{display:block;}}
 
 /* NAV */
 #nav{position:fixed;top:0;left:0;right:0;z-index:600;display:flex;align-items:center;justify-content:space-between;padding:28px 72px;transition:background .4s,padding .3s,border-color .4s;}
@@ -592,37 +597,63 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);ov
   <div class="ab-grid">
     <div class="ab-left">
       <div class="ab-eyeb">About me</div>
-      <h1 class="ab-ttl">Hello,<br>I'm <em>Sharayu.</em></h1>
-      <div class="ab-avatar"><img src="https://i.ibb.co/Nd3SMNny/Chat-GPT-Image-Mar-1-2026-02-49-22-PM.png" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;"></div>
-      <div class="ab-lnks"><a class="ab-lnk" href="https://linkedin.com/in/sharayu-design" target="_blank">LinkedIn</a><a class="ab-lnk" href="#" onclick="nav('contact');return false;">Let's Talk →</a></div>
+      <h1 class="ab-ttl"><span class="hello-line">Hello,</span>I'm <em>Sharayu.</em></h1>
+      <div class="ab-avatar">
+        <img src="https://i.ibb.co/WNmvLD2s/Me.png" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;">
+      </div>
+      <div class="ab-lnks">
+        <a class="ab-lnk" href="https://linkedin.com/in/sharayu-design" target="_blank">LinkedIn</a>
+        <a class="ab-lnk" href="#" onclick="nav('contact');return false;">Let's Talk →</a>
+      </div>
     </div>
     <div class="ab-right">
-      <div class="rv"><div class="ab-lbl">Who I am</div><p class="ab-txt">I’m a Product and UX Designer <em>driven by the belief that design should make complex systems clear, accessible, and meaningful. My interest began with a curiosity about how people make decisions and navigate structured environments, leading me to user experience as a way to connect human behaviour with technology and organisational goals.
-
-Over the past four years, I’ve worked across finance, government, and enterprise environments, including policy-heavy and approval-based systems. These contexts shaped my ability to understand constraints, analyse workflows, and translate complexity into clarity. At PwC and in other client-facing roles, I collaborated with product managers, developers, and stakeholders to design internal platforms and digital products that support informed decision-making and operational efficiency. Through research, interaction design, and iteration, I focus on creating experiences that build trust as well as usability.
-
-My mission is to bridge complex organisational processes and human understanding through research-led, collaborative design. I aim to create structured, intuitive experiences that help users feel confident and supported.
-
-I’m particularly interested in enterprise and public-sector products where thoughtful design can improve transparency, accessibility, and efficiency at scale. Guided by empathy, curiosity, and continuous learning, I strive to create solutions that are both practical and meaningful.</p></div>
-      <div class="rv" style="transition-delay:.05s"><div class="ab-lbl">By the numbers</div><div class="stats-row" style="margin-top:8px"><div class="stat-box"><div class="sb-num">4+</div><div class="sb-desc">Years of experience</div></div><div class="stat-box"><div class="sb-num">40+</div><div class="sb-desc">Projects shipped</div></div><div class="stat-box"><div class="sb-num">18</div><div class="sb-desc">Happy clients</div></div></div></div>
-      <div class="rv" style="transition-delay:.1s"><div class="ab-lbl">Experience</div><div class="tl">
-        <div class="tl-item"><div class="tl-logo tl-m">M</div><div><div class="tlc-title">Monash University</div><div class="tlc-tags"><span class="tlc-tag">AI-enabled platforms</span><span class="tlc-tag">Research-driven design</span></div><div class="tlc-desc">Designed AI-enabled education tools within accessibility, usability, and compliance constraints.</div></div></div>
-        <div class="tl-item"><div class="tl-logo tl-p">PwC</div><div><div class="tlc-title">PricewaterhouseCoopers</div><div class="tlc-tags"><span class="tlc-tag">Enterprise UX</span><span class="tlc-tag">Financial systems</span></div><div class="tlc-desc">Contributed to multiple enterprise platforms supporting complex financial workflows.</div></div></div>
-        <div class="tl-item"><div class="tl-logo tl-c">CN</div><div><div class="tlc-title">CellNova</div><div class="tlc-role">Co-Founder &amp; Designer</div><div class="tlc-tags"><span class="tlc-tag">Zero-to-one</span><span class="tlc-tag">Brand identity</span></div><div class="tlc-desc">Led end-to-end design decisions across product strategy, UX systems, and brand foundations.</div></div></div>
-        <div class="tl-item"><div class="tl-logo tl-3">3M</div><div><div class="tlc-title">3 Minds Digital</div><div class="tlc-role">Graphic Designer</div><div class="tlc-tags"><span class="tlc-tag">Brand identity</span><span class="tlc-tag">Visual systems</span></div></div></div>
-      </div></div>
-      <div class="rv" style="transition-delay:.15s"><div class="ab-lbl">Strengths</div><div class="sk-grid">
-        <div class="sk-pill"><div class="sk-name">UX Research</div><div class="sk-desc">Interviews, diary studies, usability testing</div></div>
-        <div class="sk-pill"><div class="sk-name">UI Design</div><div class="sk-desc">High-fidelity screens, prototypes, motion</div></div>
-        <div class="sk-pill"><div class="sk-name">Design Systems</div><div class="sk-desc">Scalable component libraries &amp; tokens</div></div>
-        <div class="sk-pill"><div class="sk-name">Product Strategy</div><div class="sk-desc">IA, user journeys, competitive analysis</div></div>
-        <div class="sk-pill"><div class="sk-name">Accessibility</div><div class="sk-desc">WCAG compliance, inclusive design</div></div>
-        <div class="sk-pill"><div class="sk-name">Stakeholder Alignment</div><div class="sk-desc">Presentations, briefs, dev handoff</div></div>
-      </div></div>
-      <div class="rv" style="transition-delay:.2s"><div class="cta-blk"><div><h3>Want to work together?</h3><p>I'm currently taking on select new projects.</p></div><button class="cta-btn-dk" onclick="nav('contact')">Let's Talk →</button></div></div>
+      <div class="rv">
+        <div class="ab-lbl">Who I am</div>
+        <p class="ab-txt">I'm a Product and UX Designer <em>driven by the belief that design should make complex systems clear, accessible, and meaningful.</em> My interest began with a curiosity about how people make decisions and navigate structured environments, leading me to user experience as a way to connect human behaviour with technology and organisational goals.</p>
+        <p class="ab-txt">Over the past four years, I've worked across finance, government, and enterprise environments, including policy-heavy and approval-based systems. These contexts shaped my ability to understand constraints, analyse workflows, and translate complexity into clarity. At PwC and in other client-facing roles, I collaborated with product managers, developers, and stakeholders to design internal platforms and digital products that support informed decision-making and operational efficiency. Through research, interaction design, and iteration, I focus on creating experiences that build trust as well as usability.</p>
+        <p class="ab-txt">My mission is to bridge complex organisational processes and human understanding through research-led, collaborative design. I aim to create structured, intuitive experiences that help users feel confident and supported.</p>
+        <p class="ab-txt">I'm particularly interested in enterprise and public-sector products where thoughtful design can improve transparency, accessibility, and efficiency at scale. Guided by empathy, curiosity, and continuous learning, I strive to create solutions that are both practical and meaningful.</p>
+      </div>
+      <div class="rv" style="transition-delay:.1s">
+        <div class="ab-lbl">Experience</div>
+        <div class="tl">
+          <div class="tl-item"><div class="tl-logo tl-m">M</div><div><div class="tlc-title">Monash University</div><div class="tlc-tags"><span class="tlc-tag">AI-enabled platforms</span><span class="tlc-tag">Research-driven design</span></div><div class="tlc-desc">Designed AI-enabled education tools within accessibility, usability, and compliance constraints.</div></div></div>
+          <div class="tl-item"><div class="tl-logo tl-p">PwC</div><div><div class="tlc-title">PricewaterhouseCoopers</div><div class="tlc-tags"><span class="tlc-tag">Enterprise UX</span><span class="tlc-tag">Financial systems</span></div><div class="tlc-desc">Contributed to multiple enterprise platforms supporting complex financial workflows.</div></div></div>
+          <div class="tl-item"><div class="tl-logo tl-c">CN</div><div><div class="tlc-title">CellNova</div><div class="tlc-role">Co-Founder &amp; Designer</div><div class="tlc-tags"><span class="tlc-tag">Zero-to-one</span><span class="tlc-tag">Brand identity</span></div><div class="tlc-desc">Led end-to-end design decisions across product strategy, UX systems, and brand foundations.</div></div></div>
+          <div class="tl-item"><div class="tl-logo tl-3">3M</div><div><div class="tlc-title">3 Minds Digital</div><div class="tlc-role">Graphic Designer</div><div class="tlc-tags"><span class="tlc-tag">Brand identity</span><span class="tlc-tag">Visual systems</span></div></div></div>
+        </div>
+      </div>
+      <div class="rv" style="transition-delay:.15s">
+        <div class="ab-lbl">Strengths</div>
+        <div class="sk-grid">
+          <div class="sk-pill"><div class="sk-name">UX Research</div><div class="sk-desc">Interviews, diary studies, usability testing</div></div>
+          <div class="sk-pill"><div class="sk-name">UI Design</div><div class="sk-desc">High-fidelity screens, prototypes, motion</div></div>
+          <div class="sk-pill"><div class="sk-name">Design Systems</div><div class="sk-desc">Scalable component libraries &amp; tokens</div></div>
+          <div class="sk-pill"><div class="sk-name">Product Strategy</div><div class="sk-desc">IA, user journeys, competitive analysis</div></div>
+          <div class="sk-pill"><div class="sk-name">Accessibility</div><div class="sk-desc">WCAG compliance, inclusive design</div></div>
+          <div class="sk-pill"><div class="sk-name">Stakeholder Alignment</div><div class="sk-desc">Presentations, briefs, dev handoff</div></div>
+        </div>
+      </div>
+      <div class="rv" style="transition-delay:.2s">
+        <div class="cta-blk">
+          <div><h3>Want to work together?</h3><p>I'm currently taking on select new projects.</p></div>
+          <button class="cta-btn-dk" onclick="nav('contact')">Let's Talk →</button>
+        </div>
+      </div>
     </div>
   </div>
-  <footer class="sf"><div class="sf-top"><div><span class="sf-logo">sharayu.design</span><p class="sf-tagline">Crafting thoughtful digital experiences.</p><div class="sf-badge"><div class="sf-badge-dot"></div><span>Available for new projects</span></div></div><div class="sf-col"><h4>Navigate</h4><ul><li><a href="#" onclick="nav('work');return false;">Work</a></li><li><a href="#" onclick="nav('about');return false;">About</a></li><li><a href="#" onclick="nav('contact');return false;">Let's Talk</a></li></ul></div><div class="sf-col"><h4>Connect</h4><ul><li><a href="mailto:hello.sharayu.design@gmail.com">hello.sharayu.design@gmail.com</a></li><li><a href="tel:+61424323385">+61 424 323 385</a></li><li><a href="#">LinkedIn</a></li></ul></div></div><div class="sf-bot"><p class="sf-copy">© 2026 sharayu.design. All rights reserved.</p><span class="sf-sig">Designed with intention.</span></div></footer>
+  <footer class="sf">
+    <div class="sf-top">
+      <div>
+        <span class="sf-logo">sharayu.design</span>
+        <p class="sf-tagline">Crafting thoughtful digital experiences.</p>
+        <div class="sf-badge"><div class="sf-badge-dot"></div><span>Available for new projects</span></div>
+      </div>
+      <div class="sf-col"><h4>Navigate</h4><ul><li><a href="#" onclick="nav('work');return false;">Work</a></li><li><a href="#" onclick="nav('about');return false;">About</a></li><li><a href="#" onclick="nav('contact');return false;">Let's Talk</a></li></ul></div>
+      <div class="sf-col"><h4>Connect</h4><ul><li><a href="mailto:hello.sharayu.design@gmail.com">hello.sharayu.design@gmail.com</a></li><li><a href="tel:+61424323385">+61 424 323 385</a></li><li><a href="#">LinkedIn</a></li></ul></div>
+    </div>
+    <div class="sf-bot"><p class="sf-copy">© 2026 sharayu.design. All rights reserved.</p><span class="sf-sig">Designed with intention.</span></div>
+  </footer>
 </div>
 
 <!-- CONTACT PAGE -->
