@@ -1464,9 +1464,13 @@ async function submitForm(){
     method: 'POST',
     headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      firstName: n,
-      email: e
-    })
+  firstName: n,
+  lastName: document.querySelector('#form-body .frow .ff:nth-child(2) input').value,
+  email: e,
+  projectType: document.querySelector('.tchip.act')?.textContent || 'Not selected',
+  budget: document.querySelector('#form-body select').value || 'Not selected',
+  message: document.querySelector('#form-body textarea').value
+})
   });
 
   if(res.ok){
