@@ -1379,13 +1379,13 @@ function nav(page){
 
     /* work page filter reset */
     if(page==='work'){
-      document.querySelectorAll('.fb').forEach(b=>b.classList.remove('act'));
-      document.querySelector('.fb[data-f="all"]').classList.add('act');
-document.getElementById('pgrid').classList.remove('filt');
-document.querySelectorAll('.pc').forEach(c=>{
-  c.style.display = '';
-});
-    }
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('act'));
+  document.querySelector('.fb[data-f="all"]').classList.add('act');
+  document.getElementById('pgrid').classList.remove('filt');
+  document.querySelectorAll('.pc').forEach(c=>{
+    c.style.display = '';
+  });
+}
 
     revealOnScreen();
     bindHover(document.body);
