@@ -593,9 +593,9 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);ov
     <p class="ph-sub">Designing scalable digital experiences through research, systems thinking, and visual craft.</p>
   </div>
   <div class="filters">
-    <button class="fb" data-f="all">All</button>
-    <button class="fb act" data-f="uiux">UI / UX</button>
-    <button class="fb" data-f="graphic">Brand &amp; Visual Systems</button>
+    <button class="fb act" data-f="all">All</button>
+<button class="fb" data-f="uiux">UI / UX</button>
+<button class="fb" data-f="graphic">Brand &amp; Visual Systems</button>
   </div>
   <div class="pgrid" id="pgrid">
     <a class="pc big rv" onclick="cs('bloom');return false;" href="#" data-c="uiux"><div class="pc-img"><div class="pc-img-inner" style="background:linear-gradient(135deg,#d6c8f8,#f5c6d2,#fce4b0);"><img src="https://i.ibb.co/QFLTkWVf/Hero-1.png" style="width:100%;height:100%;object-fit:cover;"></div><div class="pc-ov"></div><div class="pc-cta"><span>View Case Study</span><div class="pc-arrow">→</div></div></div><div class="pc-info"><div class="pc-cats"><span class="pc-cat">UI / UX</span><span class="pc-cat">Web App</span></div><div class="pc-title">Government Treasury Finance Platform Redesign</div><div class="pc-brief">Redesigned a legacy government treasury platform to improve usability, streamline approvals, and enhance compliance workflows.</div></div></a>
@@ -1380,11 +1380,11 @@ function nav(page){
     /* work page filter reset */
     if(page==='work'){
       document.querySelectorAll('.fb').forEach(b=>b.classList.remove('act'));
-      document.querySelector('.fb[data-f="uiux"]').classList.add('act');
-      document.getElementById('pgrid').classList.add('filt');
-      document.querySelectorAll('.pc').forEach(c=>{
-        c.style.display = (c.dataset.c||'').includes('uiux')?'':'none';
-      });
+      document.querySelector('.fb[data-f="all"]').classList.add('act');
+document.getElementById('pgrid').classList.remove('filt');
+document.querySelectorAll('.pc').forEach(c=>{
+  c.style.display = '';
+});
     }
 
     revealOnScreen();
